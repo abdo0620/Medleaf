@@ -1,13 +1,15 @@
 import os
-import pypdf 
 import tiktoken
-from google import genai
+# from google import genai
 import dotenv 
-import chromadb as db
+# from chromadb.utils import embedding_functions
 dotenv.load_dotenv()
+import Chunking
+print(Chunking.lojlo("hh"))
 
-# print(os.getenv("GEMINI_API_KEY"))
+print(os.getenv("GEMINI_API_KEY"))
 # os.chdir("files")
+
 
 
 # print(os.getcwd())
@@ -61,7 +63,5 @@ dotenv.load_dotenv()
 # )
 # print(len(result.embeddings))
 
-client = db.Client()
-collection = client.create_collection("aaaaaaaaa")
-collection.add(documents=["law.txt"],ids=["1"],embeddings="gemini-embedding-001")
-print(collection.get())
+
+
