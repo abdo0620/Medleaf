@@ -1,8 +1,11 @@
 from google import genai
 import os  
 import dotenv
+from google.genai.local_tokenizer import LocalTokenizer
+
 dotenv.load_dotenv()
-client = genai.Client()
+
+tokenizer = LocalTokenizer(model_name="gemini-2.5-flash")
 def chunking(text : str, token_limit : int , jump : int ,overlap = 0 ,l=[]):
     n= len(text)
     i=jump
@@ -14,12 +17,12 @@ def chunking(text : str, token_limit : int , jump : int ,overlap = 0 ,l=[]):
     total_tokens = 0
     while  i < n  and total_tokens < token_limit:
         
-        total_tokens += client.models.count_tokens(model="gemini-3.5-flash",contents=text[i-jump:i]).total_tokens
+        total_tokens += tokenizer.count_tokens(text[i-jump:i]).total_tokens
         i+=jump
+        print(total_tokens)
     l.append(text[:i])
     return chunking(text[i:],token_limit,overlap,jump,l)
-text=open("files/law.txt","r")
-print(len(chunking(text.read(3300),1000,100)))
+
 
 
 
