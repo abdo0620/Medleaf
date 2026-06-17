@@ -16,10 +16,12 @@ def chunking(text : str, token_limit : int , jump : int ,overlap = 0 ,l=[]):
         return l
     total_tokens = 0
     while  i < n  and total_tokens < token_limit:
-        
-        total_tokens += tokenizer.count_tokens(text[i-jump:i]).total_tokens
+        if i - jump -overlap >0:
+            total_tokens += tokenizer.count_tokens(text[i-jump-overlap:i]).total_tokens
+        else :
+            total_tokens += tokenizer.count_tokens(text[i-jump-overlap:i]).total_tokens
         i+=jump
-        print(total_tokens)
+        print(total_tokens)       
     l.append(text[:i])
     return chunking(text[i:],token_limit,overlap,jump,l)
 
