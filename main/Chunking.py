@@ -4,30 +4,52 @@ import dotenv
 from google.genai.local_tokenizer import LocalTokenizer
 
 dotenv.load_dotenv()
-
+sep = ["\n\n","\n",".",","]
 tokenizer = LocalTokenizer(model_name="gemini-2.5-flash")
-def chunking(text : str, token_limit : int , jump : int ,overlap = 0 ,l=[]):
-    n= len(text)
-    i=jump
-    if text =="":
-        return l
-    if len(text)<jump:
-        l.append(text)
-        return l
-    total_tokens = 0
-    while  i < n  and total_tokens < token_limit:
-        if i - jump -overlap >0:
-            total_tokens += tokenizer.count_tokens(text[i-jump-overlap:i]).total_tokens
-        else :
-            total_tokens += tokenizer.count_tokens(text[i-jump-overlap:i]).total_tokens
-        i+=jump
-        print(total_tokens)       
-    l.append(text[:i])
-    return chunking(text[i:],token_limit,overlap,jump,l)
+
+def closest_space(text,overlap):
+    n=text.split(" ")
+    m = int(overlap*len(n))
+    new_text=""
+    for i in range(len(n)-m-1,len(n)):
+        new_text+= n[i] + " "
+    return new_text.strip()
+print(closest_space("fjf fjf jf f fjf f f fjf f  ggggggggggg",0.6))
+
+def overlaping(chunks,overlap ):
+    new_chunks=[chunks[0]]
+    for i in range(1,len(chunks)):
+        new_chunks.append(closest_space(chunks[i-1],overlap)+" | " +chunks[i])
+    return new_chunks
+
+        
 
 
 
 
+def chunking(text : str, token_limit : int ,sepa = sep):
+    text=text.strip()
+    if text=="":
+        return []
+    elif tokenizer.count_tokens(text).total_tokens < token_limit:
+        return [text]
+    elif sepa==[]:
+        return [text]
 
+    parts=text.split(sepa[0])
+    l=[]
+    next_sepa = sepa[1:] 
+    for i in range(len(parts)):        
+        l+=chunking( parts[i] ,token_limit,sepa=next_sepa)
+    
+    return (l)
+text="ahmed was gay\n\n he was kiling aoahoghgogh. ogogogogogogoggogoogog, aooaoaogjggj, yyyy. \n ojojojojojo. "
+
+
+
+def rec_chunk(text,token_limit,overlap,sepa=sep):
+    return overlaping(chunking(text,token_limit,sepa),overlap )
+
+print((rec_chunk(text,20,0.3)))
 
 
