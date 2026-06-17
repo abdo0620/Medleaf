@@ -14,8 +14,10 @@ for i in doc_list:
     reader_pages=reader.pages
     j=0
     for page in reader_pages:
-        l=Chunking.chunking(page.extract_text(extraction_mode="layout"),1000,300)
-        collection.add( documents =l , ids=[str(uuid.uuid4()) for _ in range(len(l))] )
+        text=page.extract_text(extraction_mode="layout")
+        if text!="":
+            l = Chunking.chunking(text,900,300, overlap = 200)
+            collection.add( documents = l , ids=[str(uuid.uuid4()) for _ in range(len(l))] )
 
 print("Your documents are loaded")
 
