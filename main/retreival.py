@@ -2,4 +2,8 @@ import chromadb as db
 
 client=db.PersistentClient("Vectordb")
 collection =client.get_collection("mrooc")
-print(str(collection.query(query_texts="assurance",n_results=1)["documents"]))
+
+def retreive_chunks(query):
+    results=collection.query(query_texts=query,n_results=5)["documents"]
+    return results
+print(retreive_chunks("Naproxen"))
