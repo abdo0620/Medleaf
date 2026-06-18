@@ -43,13 +43,11 @@ def chunking(text : str, token_limit : int ,sepa = sep):
         l+=chunking( parts[i] ,token_limit,sepa=next_sepa)
     
     return (l)
-text="ahmed was gay\n\n he was kiling aoahoghgogh. ogogogogogogoggogoogog, aooaoaogjggj, yyyy. \n ojojojojojo. "
 
 
 
 def rec_chunk(text,token_limit,overlap,sepa=sep):
     return overlaping(chunking(text,token_limit,sepa),overlap )
 
-print((rec_chunk(text,20,0.3)))
 
 
