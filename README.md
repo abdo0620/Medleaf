@@ -5,4 +5,4 @@
 
 ## New problems
 - Takes a lot of time to initialze the database (10 minutes for 1000 text files)
--
+- Odd results even with usgin exact key words ( meta + updating chunking?)
