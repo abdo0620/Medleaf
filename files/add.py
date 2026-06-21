@@ -3,15 +3,14 @@ import requests, os
 os.makedirs("leaflets", exist_ok=True)
 total_saved = 0
 
-for skip in range(0,1):
-    url = f"https://api.fda.gov/drug/label.json?search=openfda.product_type:HUMAN+PRESCRIPTION+DRUG&limit=1000&skip={skip}"
-    r = requests.get(url)
-    results = r.json().get("results", [])
+url = f"https://api.fda.gov/drug/label.json?search=openfda.product_type:HUMAN+PRESCRIPTION+DRUG&limit=1000&skip={skip}"
+r = requests.get(url)
+results = r.json().get("results", [])
 
-    if not results:
-        break
+if not results:
+        raise Exception("Sorry, we encountered a problem while loading the dataset")
 
-    for drug in results:
+for drug in results:
         brand_name   = drug.get("openfda", {}).get("brand_name", ["Unknown"])[0]
         generic_name = drug.get("openfda", {}).get("generic_name", [""])[0]
         manufacturer = drug.get("openfda", {}).get("manufacturer_name", [""])[0]
@@ -119,14 +118,14 @@ STORAGE AND HANDLING:
 {storage}
 """.strip()
 
-            safe_name = brand_name.replace(" ", "_").replace("/", "_")[:50]
-            filename = f"files/drug_text_files/drug_{total_saved:04d}_{safe_name}.txt"
+        safe_name = brand_name.replace(" ", "_").replace("/", "_")[:50]
+        filename = f"files/drug_text_files/drug_{total_saved:04d}_{safe_name}.txt"
 
-            with open(filename, "w", encoding="utf-8") as f:
+        with open(filename, "w", encoding="utf-8") as f:
                 f.write(text)
 
-            total_saved += 1
+        total_saved += 1
 
-    print(f"Saved {total_saved} drugs so far...")
+print(f"Saved {total_saved} drugs so far...")
 
 print("Done! Total saved:", total_saved)
