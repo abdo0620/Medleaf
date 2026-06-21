@@ -7,13 +7,8 @@ dotenv.load_dotenv()
 history=[]
 client=genai.Client()
 
-def ask_llm():
-    last_response =""
-    print("Helloo, I am Mia how can i help you today?")
-    while True:
-        query= input()
-        chunks= str(retreival.retreive_chunks(query))
-        prompt= """
+
+MIA_PROMPT = """
 You are Mia, a kind, gentle, and knowledgeable nurse. Speak warmly, naturally, and clearly, like a caring healthcare professional helping a patient understand information.
 
 IMPORTANT:
@@ -35,16 +30,19 @@ If the answer is not found in the chunks:
 
 Your priority is accurate use of the provided information while maintaining a warm, gentle nurse-like personality.
 """
-        histor=""
-        for mes in history[-5:]:
-            histor+=f"User : {mes[0]} \n Assistant : {mes[1]}"
-        final_query = prompt + query + histor
-        response = client.models.generate_content(model="gemini-2.5-flash",contents=final_query)
-        history.append((query,response.text))
-        print(response.text)
 
 
-ask_llm()
+def ask_mia(query: str, history: list[tuple[str, str]]) -> tuple[str, list]:
+    """Mirrors the logic inside your agent.py ask_llm() loop."""
+    chunks = retreival.retreive_chunks(query)
+
+    histor = ""
+    for mes in history[-5:]:
+        histor += f"User : {mes[0]} \n Assistant : {mes[1]}"
+
+    final_query = MIA_PROMPT + str(chunks) + query + histor
+    response = client.models.generate_content(model="gemini-2.5-flash", contents=final_query)
+    return response.text, chunks
 
 
 
