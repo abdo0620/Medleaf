@@ -13,7 +13,6 @@ def closest_space(text:str,overlap:float):
     for i in range(len(n)-m,len(n)):
         new_text+= n[i] + " "
     return new_text.strip()
-print(closest_space("fjf fjf jf f fjf f f fjf f  ggggggggggg",3))
 
 def overlaping(chunks,overlap ):
     assert 0 <= overlap and overlap <= 1,"overlap value must be bettween 0 and 1"

@@ -1,3 +1,4 @@
-main/.env
+Rag/.env
 Vectordb/
 files/drug_text_files/
+files/drug_json_files/
