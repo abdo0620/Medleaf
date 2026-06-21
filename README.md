@@ -6,3 +6,4 @@
 ## New problems
 - Takes a lot of time to initialze the database (10 minutes for 1000 text files)
 - Odd results even with usgin exact key words ( meta + updating chunking?)
+- the llm mix the chunks in when responding even they are not related ,could be answering questions about the wrong drug entirely and never know it.
