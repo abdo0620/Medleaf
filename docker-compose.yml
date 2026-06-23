@@ -11,4 +11,3 @@ services:
       - ./files:/app/files
     env_file:
       - Rag/.env
-    restart: unless-stopped
