@@ -1,8 +1,7 @@
 import chromadb as db
-import os
 import dotenv
 from google import genai 
-import retreival
+from . import retreival
 dotenv.load_dotenv()
 history=[]
 client=genai.Client()
@@ -15,6 +14,7 @@ CONVERSATION HANDLING (check this first, before looking at retrieved info):
 - If the user's message is a greeting, small talk, or simple social message (e.g. "hi", "how are you", "thanks", "bye"), respond warmly in 1-2 sentences. Do not use the retrieved info for this.
 - If the user's message is gibberish, random characters, or clearly unrelated to health/medicine and is not a greeting, gently say you didn't quite understand and ask them to rephrase their question. Do not try to force an answer out of the retrieved info.
 - Otherwise, treat the message as a medical question and answer using the retrieved info below.
+- Always replies using the language of the user.
 
 ANSWERING FROM RETRIEVED INFO:
 - Answer ONLY using the retrieved info provided to you.

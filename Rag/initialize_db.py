@@ -1,6 +1,6 @@
 import chromadb as db
 import os
-import Chunking
+from . import Chunking
 import uuid
 from chromadb.config import Settings
 import json

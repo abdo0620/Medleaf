@@ -1,7 +1,10 @@
-# collect.py — lance sur ton PC
 import json
-import agent  # ton fichier agent.py existant
+import sys
+from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from Rag import agent 
 test_questions = [
     "how much tamsulosin should i take",
     "what is betamethasone used for",
