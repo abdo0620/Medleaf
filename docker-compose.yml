@@ -7,10 +7,8 @@ services:
     ports:
       - "8501:8501"
     volumes:
-      # Persist ChromaDB data across container restarts
       - ./Vectordb:/app/Vectordb
-      # Persist uploaded drug files
       - ./files:/app/files
     env_file:
-      - .env
+      - Rag/.env
     restart: unless-stopped
