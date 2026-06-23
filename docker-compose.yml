@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  medleaft:
+    build: .
+    container_name: medleaft_app
+    ports:
+      - "8501:8501"
+    volumes:
+      # Persist ChromaDB data across container restarts
+      - ./Vectordb:/app/Vectordb
+      # Persist uploaded drug files
+      - ./files:/app/files
+    env_file:
+      - .env
+    restart: unless-stopped
