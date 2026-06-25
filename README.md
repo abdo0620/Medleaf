@@ -1,5 +1,5 @@
 # MedLeaf RAG Application
-![MedLeaf App Interface](Screenshot 2026-06-25 204033.png)
+![MedLeaf App Interface](screenshots/Screenshot 2026-06-25 204033.png)
 
 
 ## Project Description
