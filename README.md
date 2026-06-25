@@ -1,5 +1,4 @@
  ![MedLeaf App Interface](app/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png) 
- # MedLeaf RAG Application
 
 ## Project Description
 MedLeaf is a research-focused application for analyzing drug leaflet content using retrieval-augmented generation (RAG). It combines a Streamlit user interface with a backend pipeline that:
