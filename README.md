@@ -1,11 +1,12 @@
  ![MedLeaf App Interface](app/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png) 
 
 ## Project Description
-MedLeaf is a research-focused application for analyzing drug leaflet content using retrieval-augmented generation (RAG). It combines a Streamlit user interface with a backend pipeline that:
-- ingests pharmaceutical text data,
-- creates searchable chunks,
-- indexes content in a local vector database,
-- and generates answers grounded in the source material.
+MedLeaf is a research-focused application for analyzing drug leaflet content using retrieval-augmented generation (RAG).
+It provides:
+- a Streamlit interface for user queries and responses,
+- a backend pipeline for ingestion, chunking, embedding, storage, and retrieval,
+- a local vector database for semantic search,
+- AI-generated answers grounded in the source documents.
 
 The project demonstrates how AI can improve access to medical product information.
 
@@ -16,7 +17,7 @@ The project demonstrates how AI can improve access to medical product informatio
 - Backend architecture in `Rag/`
 - Text chunking and retrieval for relevant search results
 - Tokenization integration with `google-genai` and `sentencepiece`
-- Docker and Docker Compose for consistent deployment
+- Docker and Docker Compose deployment
 - Resolved Docker import and dependency issues
 
 ## Tools
@@ -28,7 +29,7 @@ The project demonstrates how AI can improve access to medical product informatio
 - `sentencepiece`
 
 ## Run with Docker
-This project is designed to run with Docker only.
+Run with Docker only.
 
 ### Windows
 1. Install Docker Desktop.
@@ -42,6 +43,7 @@ This project is designed to run with Docker only.
    ```text
    http://localhost:8501
    ```
+5. Open your browser and go to `http://localhost:8501`.
 
 ### macOS / Linux
 1. Install Docker Desktop (macOS) or Docker Engine / Docker Compose (Linux).
@@ -55,6 +57,7 @@ This project is designed to run with Docker only.
    ```text
    http://localhost:8501
    ```
+5. Open your browser and go to `http://localhost:8501`.
 
 To stop the app:
 ```bash
@@ -62,6 +65,26 @@ Ctrl+C
 
 docker compose down
 ```
+
+## Environment variables
+1. Copy the example environment file and add the API key:
+
+```bash
+cp Rag/.env.example Rag/.env
+```
+
+2. Create file `Rag/.env` and set the Gemini API key (or Google API key):
+
+```
+GEMINI_API_KEY=your_gemini_api_key_here
+# or
+GOOGLE_API_KEY=your_google_api_key_here
+```
+
+3. The Docker Compose service reads `Rag/.env` (see `docker-compose.yml`).
+   - Place the real API key only in `Rag/.env` and do not commit it to version control.
+
+`Rag/.env.example` contains placeholder values to copy from.
 
 ## How the System Works
 The app follows a retrieval-augmented generation workflow.
@@ -72,7 +95,7 @@ The app follows a retrieval-augmented generation workflow.
 
 2. **Chunking**
    - Split documents into smaller, searchable chunks.
-   - Smaller chunks improve the relevance of search results.
+   - Capture semantic boundaries while limiting chunk size.
 
 3. **Embedding**
    - Convert each chunk into a numerical vector.
@@ -80,7 +103,7 @@ The app follows a retrieval-augmented generation workflow.
 
 4. **Vector storage**
    - Store embeddings in the `Vectordb/` vector database.
-   - This enables fast similarity search.
+   - Retrieve relevant chunks through similarity indexing.
 
 5. **Retrieval**
    - Convert the user's query into an embedding.
@@ -88,13 +111,13 @@ The app follows a retrieval-augmented generation workflow.
 
 6. **Answer generation**
    - Send the selected chunks to the AI agent.
-   - Generate a response based on the retrieved information.
+   - Synthesize a response grounded in retrieved content.
 
 ## Why Embedding Matters
 Embeddings connect text to semantic search.
-- They transform words into numeric vectors.
-- Similar ideas produce similar vectors.
-- This helps the system find meaning even when phrasing differs.
+- Convert words and phrases into numeric vectors.
+- Represent semantic similarity across text.
+- Enable retrieval even when query wording differs.
 
 ## Project Structure
 - `app/app.py` — main Streamlit application
@@ -106,10 +129,9 @@ Embeddings connect text to semantic search.
 - `files/` — source data files and utilities
 
 ## Highlights
-This project demonstrates:
-- modern AI tooling and vector search,
-- Docker-based deployment,
-- practical problem solving for Docker dependencies,
-- and a usable interface for non-technical users.
+- Modern AI tooling and vector search
+- Docker-based deployment
+- Practical resolution of Docker dependency issues
+- A user-facing interface for non-technical users
 
 
