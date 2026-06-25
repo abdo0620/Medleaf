@@ -1,3 +1,3 @@
-import agent 
-import Chunking
-import retreival
+from . import agent 
+from . import Chunking
+from . import retreival
