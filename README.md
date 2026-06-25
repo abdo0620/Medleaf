@@ -1,24 +1,24 @@
-# MedLeaf RAG Application
-![MedLeaf App Interface](screenshots/Screenshot%202026-06-25%20204033.png)
-
+ ![MedLeaf App Interface](app/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png) 
+ # MedLeaf RAG Application
 
 ## Project Description
-MedLeaf is a research-oriented application for exploring drug leaflet content using retrieval-augmented generation (RAG). It combines a Streamlit user interface with a backend that:
-- ingests drug text data,
+MedLeaf is a research-focused application for analyzing drug leaflet content using retrieval-augmented generation (RAG). It combines a Streamlit user interface with a backend pipeline that:
+- ingests pharmaceutical text data,
 - creates searchable chunks,
-- stores them in a local vector database,
-- and answers questions using AI-driven retrieval.
+- indexes content in a local vector database,
+- and generates answers grounded in the source material.
 
-The app is intended to demonstrate how AI can assist with understanding and querying medical product information.
+The project demonstrates how AI can improve access to medical product information.
+
+![MedLeaf App Interface](screenshots/Screenshot%202026-06-25%20204033.png)
 
 ## Key Contributions
-- Built the Streamlit interface in `app/app.py`
-- Designed the `Rag` package to organize backend logic
-- Implemented chunking and retrieval to connect user queries with relevant data
-- Integrated AI tokenization support using `google-genai` and `sentencepiece`
-- Configured Docker and Docker Compose for a reproducible runtime
-- Resolved package import issues inside the Docker container
-- Fixed dependency compatibility so the project can build cleanly in Docker
+- Streamlit user interface in `app/app.py`
+- Backend architecture in `Rag/`
+- Text chunking and retrieval for relevant search results
+- Tokenization integration with `google-genai` and `sentencepiece`
+- Docker and Docker Compose for consistent deployment
+- Resolved Docker import and dependency issues
 
 ## Tools
 - Python 3.12
@@ -27,9 +27,8 @@ The app is intended to demonstrate how AI can assist with understanding and quer
 - Chroma vector database
 - Google Gemini / `google-genai`
 - `sentencepiece`
-- `requirements.txt` dependency management
 
-## How to Run the App with Docker
+## Run with Docker
 This project is designed to run with Docker only.
 
 ### Windows
@@ -37,7 +36,7 @@ This project is designed to run with Docker only.
 2. Open a terminal in the project root folder.
 3. Run:
    ```powershell
-docker compose up --build
+   docker compose up --build
    ```
 4. Wait for the build to complete.
 5. Open your browser and go to:
@@ -50,7 +49,7 @@ docker compose up --build
 2. Open a terminal in the project root folder.
 3. Run:
    ```bash
-docker compose up --build
+   docker compose up --build
    ```
 4. Wait for the build to complete.
 5. Open your browser and go to:
@@ -58,24 +57,60 @@ docker compose up --build
    http://localhost:8501
    ```
 
-> If you prefer, you can stop the app with `Ctrl+C` in the terminal and then run `docker compose down`.
+To stop the app:
+```bash
+Ctrl+C
 
+docker compose down
+```
 
+## How the System Works
+The app follows a retrieval-augmented generation workflow.
+
+1. **Data ingestion**
+   - Load raw drug leaflet text files from `files/`.
+   - Normalize the text for processing.
+
+2. **Chunking**
+   - Split documents into smaller, searchable chunks.
+   - Smaller chunks improve the relevance of search results.
+
+3. **Embedding**
+   - Convert each chunk into a numerical vector.
+   - Embeddings represent semantic meaning.
+
+4. **Vector storage**
+   - Store embeddings in the `Vectordb/` vector database.
+   - This enables fast similarity search.
+
+5. **Retrieval**
+   - Convert the user's query into an embedding.
+   - Find the most similar document chunks.
+
+6. **Answer generation**
+   - Send the selected chunks to the AI agent.
+   - Generate a response based on the retrieved information.
+
+## Why Embedding Matters
+Embeddings connect text to semantic search.
+- They transform words into numeric vectors.
+- Similar ideas produce similar vectors.
+- This helps the system find meaning even when phrasing differs.
 
 ## Project Structure
 - `app/app.py` — main Streamlit application
-- `Dockerfile` — Docker image build definition
-- `docker-compose.yml` — service configuration for Docker Compose
+- `Dockerfile` — Docker image definition
+- `docker-compose.yml` — Docker Compose configuration
 - `requirements.txt` — Python dependencies
-- `Rag/` — implementation of agent, chunking, and retrieval logic
+- `Rag/` — backend logic for agent, chunking, and retrieval
 - `Vectordb/` — local vector database storage
 - `files/` — source data files and utilities
 
 ## Highlights
-This project is a strong example of:
-- working with modern AI tooling and vector search,
-- packaging a Python application for Docker,
-- solving real-world dependency and import issues,
-- and presenting a usable interface for non-technical reviewers.
+This project demonstrates:
+- modern AI tooling and vector search,
+- Docker-based deployment,
+- practical problem solving for Docker dependencies,
+- and a usable interface for non-technical users.
 
 
