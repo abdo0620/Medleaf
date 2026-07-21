@@ -1,7 +1,6 @@
-import chromadb as db
 import dotenv
 from google import genai 
-from . import retreival
+from Rag import retreival
 dotenv.load_dotenv()
 history=[]
 client=genai.Client()
