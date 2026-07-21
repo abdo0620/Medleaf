@@ -1,7 +1,6 @@
-import chromadb as db 
+from Rag import db
 
-client=db.PersistentClient("Vectordb")
-collection =client.get_collection("mrooc")
+collection=db.get_collec()
 
 def retreive_chunks(query:str):
 
