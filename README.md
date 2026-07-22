@@ -16,16 +16,13 @@ What makes this project valuable is that it turns dense and often hard-to-read l
 Here are the main screens that show how the application works in practice.
 
 ### Main interface
-![Main app interface](screenshots/Screenshot%202026-06-25%20204033.png)
+![Main app interface](screenshots/Screenshot%202026-07-22%20121857.png)
 
-### Conversational experience
-![Chat-style assistant](screenshots/Screenshot%202026-07-22%20121857.png)
+
 
 ### Document upload flow
-![Upload documents](screenshots/Screenshot%202026-07-22%20121929.png)
+![Upload documents](screenshots/Screenshot%202026-07-22%20122503.png)
 
-### Indexed knowledge base view
-![Processed documents](screenshots/Screenshot%202026-07-22%20122503.png)
 
 ## What the application does
 - Offers a multi-page Streamlit experience with dedicated sections for conversation, document upload, and project information
