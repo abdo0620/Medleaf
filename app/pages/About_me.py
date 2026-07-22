@@ -160,7 +160,7 @@ st.markdown(f"""
     <span class="icon"><img src="{icon_linkedin}"></span>
     <span><span class="label">LinkedIn</span><br><span class="value">Connect</span></span>
   </a>
-  <a class="contact-link" href="https://www.kaggle.com/YOUR_USERNAME" target="_blank">
+  <a class="contact-link" href="https://www.kaggle.com/abdelmoujib" target="_blank">
     <span class="icon"><img src="{icon_kaggle}"></span>
     <span><span class="label">Kaggle</span><br><span class="value">Profile</span></span>
   </a>

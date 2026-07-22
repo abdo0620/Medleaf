@@ -13,8 +13,7 @@ uploaded_files = st.file_uploader(
     label_visibility="collapsed",
 )
 
-if "db_status" not in st.session_state:
-    st.session_state.db_status = None
+
 if uploaded_files:
     st.success(f"✅ {len(uploaded_files)} file(s) ready to add")
     for f in uploaded_files:
@@ -23,24 +22,26 @@ if uploaded_files:
     st.divider()
 
     if st.button("➕ Add to Mia's Database", use_container_width=True):
-        with st.spinner("Processing, chunking and embedding documents into ChromaDB..., + \n While you are waiting don't hesitate to read About me Section :)"):
+        with st.spinner("Processing, chunking, and embedding documents... Feel free to check out the 'About Me' section! 😊"):
                 saved_paths = []
                 tmp_dir = Path("files/documents_injected")
                 for f in uploaded_files:
                     file_path = tmp_dir / f.name
                     saved_paths.append(str(file_path))
-                    if f.name[-4:]==".pdf":
+                    if f.name[-4:].lower()==".pdf":
                          file_path.write_bytes(f.getvalue())
-                    if f.name[-4:]==".txt":
-                
+
+                    if f.name[-4:].lower()==".txt":
+
                          text=f.getvalue().decode("utf-8")
-                
+                         file_path.write_text(text, encoding="utf-8")
+
+
                 initialize_db.add_vector_db()
-                st.session_state.db_status = "Success"   
+        st.success("Documents Uploaded Successfully")
 
 
-
-
+  
 
 
 
