@@ -3,11 +3,12 @@ from Rag import Chunking
 import uuid
 import json
 from Rag import db
+import fitz  
 
 collection=db.get_collec()
-def inialize_fda_drugs():
-    doc_list=os.listdir("files/drug_text_files")
 
+def inialize_fda_drugs() -> None:
+    doc_list=os.listdir("files/drug_text_files")
     j=0
     for i in doc_list:
         reader=open("files/drug_text_files/" + i,"r",encoding="utf-8")
@@ -22,13 +23,11 @@ def inialize_fda_drugs():
         j+=1
         print(j)
 
-print("Your documents are loaded")
 
-import fitz  
 
 DOCS_DIR = "files/documents_injected"
 
-def add_vector_db():
+def add_vector_db() -> None:
 
     doc_list = os.listdir(DOCS_DIR)
     j = 0
@@ -67,5 +66,5 @@ def add_vector_db():
             j += 1
 
           
-            os.remove(file_path)
+        os.remove(file_path)
 
