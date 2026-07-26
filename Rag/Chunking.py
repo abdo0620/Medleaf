@@ -1,11 +1,12 @@
 import dotenv
 from google.genai.local_tokenizer import LocalTokenizer
-
 dotenv.load_dotenv()
+
+
 sep = ["\n\n","\n",".",","]
 tokenizer = LocalTokenizer(model_name="gemini-2.5-flash")
 
-def closest_space(text:str,overlap:float):
+def closest_space(text:str,overlap:float) ->  str:
     assert 0 <= overlap and overlap <= 1,"overlap value must be bettween 0 and 1"
     n=text.split(" ")
     m = int(overlap*len(n))
@@ -14,7 +15,7 @@ def closest_space(text:str,overlap:float):
         new_text+= n[i] + " "
     return new_text.strip()
 
-def overlaping(chunks,overlap ):
+def overlaping(chunks:list[str],overlap : float) -> list[str]:
     assert 0 <= overlap and overlap <= 1,"overlap value must be bettween 0 and 1"
     if chunks==[]:
         return []
@@ -23,12 +24,7 @@ def overlaping(chunks,overlap ):
         new_chunks.append(closest_space(chunks[i-1],overlap)+" | " +chunks[i])
     return new_chunks
 
-        
-
-
-
-
-def chunking(text : str, token_limit : int ,sepa = sep):
+def chunking(text : str, token_limit : int ,sepa = sep) -> list[str]:
     text=text.strip()
     if text=="":
         return []
@@ -45,9 +41,7 @@ def chunking(text : str, token_limit : int ,sepa = sep):
     
     return (l)
 
-
-
-def rec_chunk(text,token_limit,overlap,sepa=sep):
+def rec_chunk(text:str,token_limit:int,overlap:float,sepa=sep) -> list[str]:
     return overlaping(chunking(text,token_limit,sepa),overlap )
 
 
