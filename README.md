@@ -108,3 +108,9 @@ The repository is organized as follows:
 ## Notes
 The Docker setup keeps your data persistent by mounting the local `Vectordb/` and `files/` folders into the container. This means your vector index and uploaded documents remain available even if the container is restarted.
 
+- Python 3.12
+- Streamlit
+- Docker and Docker Compose
+- Chroma vector database
+- Google Gemini / google-genai
+- sentencepiece
