@@ -36,8 +36,9 @@ if "display_log" not in st.session_state:
 # ──────────────────────────────────────────────────────────────────────────
 # UI
 # ──────────────────────────────────────────────────────────────────────────
-st.image("app/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png", use_container_width=True)
 
+st.image("app/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png", use_container_width=True)
+st.logo("app/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png",size="large")
 st.caption("Conversational RAG Agent for Drug Leaflet Understanding — talk to Mia")
 st.divider()
 
@@ -70,3 +71,4 @@ if query:
 
 st.divider()
 st.caption("MedLeaf · FDA API (batch) → Chunking.py → ChromaDB → Gemini")
+

@@ -1,5 +1,12 @@
 import requests, json
+import os
+
 total_saved = 0
+os.makedirs("files/drug_json_files", exist_ok=True)
+os.makedirs("files/drug_text_files", exist_ok=True)
+
+
+
 
 url = f"https://api.fda.gov/drug/label.json?search=openfda.product_type:HUMAN+PRESCRIPTION+DRUG&limit=1000&skip=0"
 r = requests.get(url)

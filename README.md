@@ -1,118 +1,112 @@
-![MedLeaf App Interface](app/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png)
+# MedLeaf Dockerized
 
-## Project Description
-MedLeaf is a research-oriented application for the analysis of drug leaflet content through a Retrieval-Augmented Generation (RAG) pipeline. The system combines a Streamlit-based user interface with a backend pipeline responsible for ingesting pharmaceutical text data, constructing searchable text segments, indexing content in a local vector database, and generating answers grounded in the source material. The project illustrates the applicability of contemporary retrieval-augmented methods to improving access to medical product information.
+MedLeaf is a Dockerized Streamlit application built to make medication leaflet information easier to explore, understand, and discuss. It combines a modern web interface with a retrieval-augmented generation (RAG) workflow so users can ask questions about medical documents, upload their own leaflets, and receive answers that are grounded in the actual source content.
 
-![MedLeaf App Interface](screenshots/Screenshot%202026-06-25%20204033.png)
+What makes this project valuable is that it turns dense and often hard-to-read leaflet documents into an interactive experience. Instead of manually scanning long PDFs or text files, a user can simply ask questions and get relevant, document-based answers in a conversational way.
 
-## I. General Architecture
+![MedLeaf interface](app/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png)
 
-The system is structured around a set of functional components operating in sequence to render pharmaceutical information searchable and interpretable:
+## Why this project matters
+- It helps users interact with medical documents in a more intuitive way.
+- It supports document-grounded answers instead of generic chatbot responses.
+- It lets users upload their own files and build a custom knowledge base.
+- It is fully containerized, making deployment and reuse much easier.
 
-- **Data ingestion**: loading of raw drug leaflet text files from `files/`, followed by text normalization for downstream processing.
-- **Chunking**: module responsible for the segmentation of documents into smaller, searchable units. Reduced chunk granularity is intended to improve the relevance of subsequent search operations.
-- **Embedding and vector storage**: component responsible for the conversion of each chunk into a numerical vector representing its semantic content, and for the storage of these vectors in a local **Chroma** vector database (`Vectordb/`) to enable efficient similarity search.
-- **Retrieval and answer generation**: the user query is converted into an embedding, the most semantically similar chunks are retrieved, and the resulting context is submitted to the AI agent (based on **Google Gemini / google-genai**) for grounded response generation.
-- **Application layer**: a **Streamlit** interface (`app/app.py`) through which users submit queries and consult generated responses.
+## App showcase
+Here are the main screens that show how the application works in practice.
 
-The project is designed to be executed exclusively within a Docker environment, in order to ensure reproducibility, service isolation, and consistency of deployment across systems.
+### Main interface
+![Main app interface](screenshots/Screenshot%202026-07-22%20121857.png)
 
-## II. Execution Procedure
 
-### II.1. Requirements
 
-The project requires a Docker-based environment:
+### Document upload flow
+![Upload documents](screenshots/Screenshot%202026-07-22%20122503.png)
 
-- **Docker Desktop** (Windows / macOS)
-- **Docker Engine / Docker Compose** (Linux)
-- A **Google Gemini API key**
 
-### II.2. Environment Configuration
+## What the application does
+- Offers a multi-page Streamlit experience with dedicated sections for conversation, document upload, and project information
+- Lets users ask questions about medication content through a chat-style assistant
+- Allows users to upload PDF or TXT files and index them into the system
+- Retrieves the most relevant document chunks before generating an answer
+- Uses a Dockerized setup so the application is easy to run and share
 
-Before building the container, copy the example environment file and add your API key:
+## Technologies used
+- Python 3.12+
+- Streamlit for the interface
+- Chroma vector database for semantic search and retrieval
+- Google Gemini / `google-genai` for answer generation
+- `python-dotenv` for environment management
+- `fitz` for extracting text from PDF files
+- Docker and Docker Compose for containerized deployment
 
-**Windows / macOS / Linux**
+## Prerequisites
+Before running the app, make sure Docker is installed on your machine:
+- Windows: Docker Desktop
+- macOS: Docker Desktop
+- Linux: Docker Engine + Docker Compose
 
-1. Navigate to the `Rag/` folder.
-2. Copy `.env.example` to `.env`:
+You will also need a valid Gemini or Google API key for the AI generation part of the application.
+
+## Quick start with Docker
+From the project root, run the following command:
+
+```bash
+docker compose up --build
 ```
-   cp .env.example .env
-```
-   (On Windows, you can also duplicate the file and rename it manually.)
-3. Open `.env` and add your Google Gemini API key:
-```
-   GEMINI_API_KEY=your_api_key_here
+
+This will build the image and start the container. Once the application is running, open your browser at:
+
+```text
+http://localhost:8501
 ```
 
-### II.3. Container Initialization
+### Stop the application
+To stop the running container, press:
 
-**Windows**
-
-1. Install Docker Desktop.
-2. Open a terminal in the project root directory.
-3. Execute:
-```
-   docker compose up --build
-```
-4. Await completion of the build process.
-5. Access the interface at: `http://localhost:8501`
-
-**macOS / Linux**
-
-1. Install Docker Desktop (macOS) or Docker Engine / Docker Compose (Linux).
-2. Open a terminal in the project root directory.
-3. Execute:
-```
-   docker compose up --build
-```
-4. Await completion of the build process.
-5. Access the interface at: `http://localhost:8501`
-
-**Note:** The `--build` flag ensures that the image is rebuilt with the dependencies specified in `requirements.txt`, including `google-genai` and `sentencepiece`. Upon completion of the build, all services are operational and the interface is available for use.
-
-### II.4. Termination
-
-To terminate the application:
-```
+```bash
 Ctrl+C
 ```
-followed by:
-```
+
+If you want to stop and remove the container completely, run:
+
+```bash
 docker compose down
 ```
 
-## III. System Workflow
+## Environment configuration
+Create a file named `Rag/.env` and add your API key in one of the following formats:
 
-The application implements a retrieval-augmented generation workflow composed of the following stages:
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+# or
+GOOGLE_API_KEY=your_google_api_key_here
+```
 
-1. **Data ingestion** — Raw drug leaflet text files are loaded from `files/` and normalized for processing.
-2. **Chunking** — Documents are segmented into smaller, searchable units; reduced chunk size is associated with improved retrieval relevance.
-3. **Embedding** — Each chunk is converted into a numerical vector encoding its semantic content.
-4. **Vector storage** — Embeddings are stored in the `Vectordb/` database (Chroma) to enable efficient similarity search.
-5. **Retrieval** — The user query is embedded and compared against stored vectors to identify the most similar document chunks.
-6. **Answer generation** — Retrieved chunks are submitted to the AI agent, which generates a response grounded in the retrieved content.
+The Docker Compose configuration automatically loads this file through the `env_file` setting, so the application can access the credential at runtime.
 
-The quality of each stage is dependent on the preceding one; retrieval accuracy, in particular, is directly conditioned by the quality of the chunking and embedding stages.
+## How the system works
+1. A user uploads PDF or TXT documents through the Streamlit interface.
+2. The uploaded files are processed and indexed into the Chroma vector database.
+3. When a user submits a question, the system converts it into a semantic query.
+4. The most relevant document chunks are retrieved from the database.
+5. The Gemini-based agent generates a clear answer grounded in the retrieved content.
 
-## IV. Role of Embedding in Semantic Search
+This makes the app more reliable than a general chatbot because the output is tied directly to the documents provided by the user.
 
-Embeddings constitute the mechanism through which textual content is rendered searchable at the semantic level:
+## Project structure
+The repository is organized as follows:
+- `app/main.py` — the entry point that manages Streamlit navigation
+- `app/app.py` — the conversational chat page for asking questions
+- `app/pages/Upload_docs.py` — the page for uploading and indexing documents
+- `app/pages/About_me.py` — the informational page about the project and author
+- `Rag/` — the backend logic for chunking, retrieval, agent interaction, and database initialization
+- `Vectordb/` — the persisted vector database storage mounted into the container
+- `files/` — uploaded documents and support files mounted into the container
+- `Dockerfile` and `docker-compose.yml` — container build and runtime configuration
 
-- They map textual units to numerical vector representations.
-- Semantically related content is mapped to proximate vectors.
-- This property enables the system to identify relevant content irrespective of variation in phrasing.
-
-## V. Project Structure
-
-- `app/app.py` — main Streamlit application
-- `Dockerfile` — Docker image definition
-- `docker-compose.yml` — Docker Compose configuration
-- `requirements.txt` — Python dependencies
-- `Rag/` — backend logic for the agent, chunking, and retrieval components
-- `Vectordb/` — local vector database storage
-- `files/` — source data files and associated utilities
-
-## VI. Tools and Dependencies
+## Notes
+The Docker setup keeps your data persistent by mounting the local `Vectordb/` and `files/` folders into the container. This means your vector index and uploaded documents remain available even if the container is restarted.
 
 - Python 3.12
 - Streamlit
