@@ -24,22 +24,43 @@ def overlaping(chunks:list[str],overlap : float) -> list[str]:
         new_chunks.append(closest_space(chunks[i-1],overlap)+" | " +chunks[i])
     return new_chunks
 
-def chunking(text : str, token_limit : int ,sepa = sep) -> list[str]:
-    text=text.strip()
-    if text=="":
+def chunking(text: str, token_limit: int, sepa=sep) -> list[str]:
+    text = text.strip()
+    if text == "":
         return []
-    elif tokenizer.count_tokens(text).total_tokens < token_limit:
+    if tokenizer.count_tokens(text).total_tokens < token_limit:
         return [text]
-    elif sepa==[]:
-        return [text]
+    if sepa == []:
+        return [text] 
 
-    parts=text.split(sepa[0])
-    l=[]
-    next_sepa = sepa[1:] 
-    for i in range(len(parts)):        
-        l+=chunking( parts[i] ,token_limit,sepa=next_sepa)
-    
-    return (l)
+    separator = sepa[0]
+    next_sepa = sepa[1:]
+    parts = text.split(separator)
+
+    processed = []
+    for p in parts:
+        p = p.strip()
+        if p == "":
+            continue
+        if tokenizer.count_tokens(p).total_tokens >= token_limit:
+            processed.extend(chunking(p, token_limit, sepa=next_sepa))
+        else:
+            processed.append(p)
+
+    merged = []
+    current = ""
+    for piece in processed:
+        candidate = piece if current == "" else current + separator + piece
+        if tokenizer.count_tokens(candidate).total_tokens < token_limit:
+            current = candidate
+        else:
+            if current:
+                merged.append(current)
+            current = piece
+    if current:
+        merged.append(current)
+
+    return merged
 
 def rec_chunk(text:str,token_limit:int,overlap:float,sepa=sep) -> list[str]:
     return overlaping(chunking(text,token_limit,sepa),overlap )
