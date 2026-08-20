@@ -11,8 +11,8 @@ def icon_src(path: str) -> str:
     data = base64.b64encode(p.read_bytes()).decode()
     return f"data:image/png;base64,{data}"
 
-st.set_page_config(page_title="About Me — MedLeaf", page_icon="app/Gemini_Generated_Image_8yo9v28yo9v28yo9.png", layout="centered")
-st.logo("app/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png",size="large")
+st.set_page_config(page_title="About Me — MedLeaf", page_icon="app/assets/images/Gemini_Generated_Image_8yo9v28yo9v28yo9.png", layout="centered")
+st.logo("app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png",size="large")
 
 # ---------- styling ----------
 st.markdown("""
