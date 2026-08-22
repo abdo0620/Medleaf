@@ -1,0 +1,28 @@
+DRUG NAME: Unknown
+GENERIC NAME: 
+MANUFACTURER: 
+ROUTE: 
+
+DESCRIPTION:
+DESCRIPTION Calcium Gluconate Injection, USP is a sterile, nonpyrogenic, supersaturated solution of calcium gluconate for intravenous use only. Each mL contains: Calcium gluconate 94 mg; calcium saccharate (tetrahydrate) 4.5 mg; Water for Injection q.s. Hydrochloric acid and/or sodium hydroxide may have been added for pH adjustment (6.0-8.2). Calcium saccharate provides 6% of the total calcium and stabilizes the supersaturated solution of calcium gluconate. Each 10 mL of the injection provides 93 mg elemental calcium (Ca ++ ) equivalent to 1 g of calcium gluconate. The structural formula is: MM1
+
+CLINICAL PHARMACOLOGY:
+CLINICAL PHARMACOLOGY Calcium is the fifth most abundant element in the body and is essential for maintenance of the functional integrity of nervous, muscular and skeletal systems, cell membranes and capillary permeability. It is also an important activator in many enzymatic reactions and is essential to a number of physiologic processes including transmission of nerve impulses; contraction of cardiac, smooth and skeletal muscles; renal function; respiration; and blood coagulation. Calcium also plays regulatory roles in the release and storage of neurotransmitters and hormones; in the uptake and binding of amino acids; in cyanocobalamin (vitamin B 12 ) absorption; and gastrin secretion.
+
+INDICATIONS AND USAGE:
+INDICATIONS & USAGE Calcium Gluconate Injection, USP is used to treat conditions arising from calcium deficiencies such as hypocalcemic tetany, hypocalcemia related to hypoparathyroidism and hypocalcemia due to rapid growth or pregnancy. It is also used in the treatment of black widow spider bites to relieve muscle cramping and as an adjunct in the treatment of rickets, osteomalacia, lead colic and magnesium sulfate overdosage. Calcium gluconate has also been employed to decrease capillary permeability in allergic conditions, nonthrombocytopenic purpura and exudative dermatoses such as dermatitis herpetiformis and for pruritus of eruptions caused by certain drugs. In hyperkalemia, calcium gluconate may aid in antagonizing the cardiac toxicity, provided the patient is not receiving digitalis therapy.
+
+CONTRAINDICATIONS:
+CONTRAINDICATIONS Calcium salts are contraindicated in patients with ventricular fibrillation or hypercalcemia. Intravenous administration of calcium is contraindicated when serum calcium levels are above normal.
+
+WARNINGS:
+WARNINGS For intravenous use only. Subcutaneous or intramuscular injection may cause severe necrosis and sloughing. WARNING: This product contains aluminum that may be toxic. Aluminum may reach toxic levels with prolonged parenteral administration if kidney function is impaired. Premature neonates are particularly at risk because their kidneys are immature, and they require large amounts of calcium and phosphate solutions, which contain aluminum. Research indicates that patients with impaired kidney function, including premature neonates, who receive parenteral levels of aluminum at greater than 4 to 5 mcg/kg/day accumulate aluminum at levels associated with central nervous system and bone toxicity. Tissue loading may occur at even lower rates of administration.
+
+DOSAGE AND ADMINISTRATION:
+DOSAGE & ADMINISTRATION The dose is dependent on the requirements of the individual patient. Intravenous calcium gluconate injection must be administered slowly. Adults —500 mg to 2 g (5 to 20 mL) Pediatric patients —200 to 500 mg (2 to 5 mL) Infants —Not more than 200 mg (not more than 2 mL) Parenteral drug products should be inspected visually for particulate matter and discoloration prior to administration, whenever solution and container permit.
+
+ADVERSE REACTIONS:
+ADVERSE REACTIONS Patients may complain of tingling sensations, a sense of oppression or heat waves and a calcium or chalky taste following the intravenous administration of calcium gluconate. Rapid intravenous injection of calcium salts may cause vasodilation, decreased blood pressure, bradycardia, cardiac arrhythmias, syncope and cardiac arrest. Use in digitalized patients may precipitate arrhythmias. Local necrosis and abscess formation may occur with intramuscular injection.
+
+SPL TEXT:
+Calcium Gluconate CALCIUM GLUCONATE CALCIUM SACCHARATE HYDROCHLORIC ACID SODIUM HYDROXIDE CALCIUM GLUCONATE CALCIUM CATION

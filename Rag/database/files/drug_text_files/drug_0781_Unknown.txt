@@ -1,0 +1,46 @@
+DRUG NAME: Unknown
+GENERIC NAME: 
+MANUFACTURER: 
+ROUTE: 
+
+DESCRIPTION:
+DALLERGY SYRUP DESCRIPTION: Each 5 mL (1 teaspoonful) contains: Chlorpheniramine Maleate............... 2 mg Phenylephrine Hydrochloride........... 8 mg Methscopolamine Nitrate............. 0.75 mg Chlorpheniramine Maleate is an antihistamine having the chemical name 2-pyridinepropanamine, γ-(4 chlorophenyl)-N, N-dimethyl-, (Z) -2- butenedioate (1:1). Phenylephrine HCl is a decongestant having the chemical name Benzenemethanol, 3-hydroxy-α-[(methylamino) methyl]-, hydrochloride. Methscopolamine is an anticholinergic having the chemical name 3-Oxa-9-azoniatricyclo, [3.3.1.0] nonane, 7-(3-hydroxy- 1-oxo-2-phenylpropoxy)-9, 9-dimethyl-,nitrate,[7(S)-(1α, 2β, 4β, 5α, 7β)]-. DALLERGY ® SYRUP contains ingredients of the following therapeutic classes: nasal decongestant, antihistamine, and antisecretory agent.
+
+CLINICAL PHARMACOLOGY:
+CLINICAL PHARMACOLOGY: Chlorpheniramine Maleate is an alkylamine type antihistamine. This group of antihistamines is among the most active histamine antagonists and is generally effective in relatively low doses. The drugs are not so prone to produce drowsiness and are among the most suitable agents for daytime use; but again, a significant proportion of patients do experience this effect. Phenylephrine Hydrochloride is a sympathomimetic which acts predominantly on alpha receptors and has little action on beta receptors. It, therefore, functions as an oral nasal decongestant with minimal CNS stimulation. Methscopolamine Nitrate is a quaternary ammonium derivative of scopolamine, which possesses the peripheral actions of the belladonna alkaloids, but does not exhibit the central actions because of its lack of ability to cross the blood-brain barrier. In this formulation, it is used because of its antisecretory effects on the respiratory system.
+
+INDICATIONS AND USAGE:
+INDICATIONS AND USAGE: For the relief of upper respiratory symptoms associated with allergies and the common cold, such as: nasal congestion, sinusitis, sneezing, lacrimation, vasomotor rhinitis, post-nasal drip, and hay fever.
+
+CONTRAINDICATIONS:
+CONTRAINDICATIONS: Hypersensitivity to any of the ingredients. Also contraindicated in patients with severe hypertension, severe coronary artery disease, patients on MAO inhibitor therapy, patients with narrow angle glaucoma, urinary retention, peptic ulcer, and during an asthmatic attack.
+
+WARNINGS:
+WARNINGS: Considerable caution should be exercised in patients with hypertension, diabetes mellitus, ischemic heart disease, hyperthyroidism, increased intraocular pressure, and prostatic hypertrophy. The elderly (60 years or older) are more likely to exhibit adverse reactions. Antihistamines may cause excitability, especially in children. At dosages higher than the recommended dose, nervousness, dizziness, or sleeplessness may occur.
+
+PRECAUTIONS:
+PRECAUTIONS: General: Caution should be exercised in patients with high blood pressure, heart disease, diabetes, or thyroid disease. The antihistamine in this product may exhibit additive effects with other CNS depressants, including alcohol. Information for Patients: Antihistamines may cause drowsiness, and ambulatory patients who operate machinery or motor vehicles should be cautioned accordingly. Drug Interactions: MAO inhibitors and beta adrenergic blockers increase the effects of sympathomimetics. Sympathomimetics may reduce the antihypertensive effects of methyldopa, mecamylamine, reserpine and veratrum alkaloids. Concomitant use of antihistamines with alcohol and other CNS depressants may have an additive effect. Pregnancy: Pregnancy Category C: It is not known whether DALLERGY® can cause fetal harm when administered to a pregnant woman or can effect reproduction capacity. DALLERGY® should be given to a pregnant woman only if clearly needed. Nursing Mothers: It is not known whether this drug is excreted in human milk. Because many drugs are excreted in human milk, caution should be exercised when DALLERGY® is administered to a nursing woman. Pediatric Use: Safety and effectiveness of DALLERGY® in children below the age of 6 have not been established.
+
+DOSAGE AND ADMINISTRATION:
+Adults and children 12 years of age and older: 2 teaspoonfuls (10 mL). Children 6 to under 12 years of age: 1 teaspoonful (5 mL). May be repeated in 4 to 6 hours if required for relief. Not to exceed 4 doses in 24 hours. Children under 6: at discretion of physician.
+
+ADVERSE REACTIONS:
+ADVERSE REACTIONS: Adverse reactions include drowsiness, lassitude, nausea, giddiness, dryness of mouth, blurred vision, cardiac palpitations, flushing, increased irritability or excitement (especially in children).
+
+DRUG INTERACTIONS:
+Drug Interactions: MAO inhibitors and beta adrenergic blockers increase the effects of sympathomimetics. Sympathomimetics may reduce the antihypertensive effects of methyldopa, mecamylamine, reserpine and veratrum alkaloids. Concomitant use of antihistamines with alcohol and other CNS depressants may have an additive effect.
+
+USE IN PREGNANCY:
+Pregnancy: Pregnancy Category C: It is not known whether DALLERGY® can cause fetal harm when administered to a pregnant woman or can effect reproduction capacity. DALLERGY® should be given to a pregnant woman only if clearly needed.
+
+NURSING MOTHERS:
+Nursing Mothers: It is not known whether this drug is excreted in human milk. Because many drugs are excreted in human milk, caution should be exercised when DALLERGY® is administered to a nursing woman.
+
+PEDIATRIC USE:
+Pediatric Use: Safety and effectiveness of DALLERGY® in children below the age of 6 have not been established.
+
+OVERDOSAGE:
+OVERDOSAGE AND TREATMENT OF OVERDOSAGE: In all cases of suspected overdose, immediately call your regional poison center, and/or contact a physician immediately. The stomach should be emptied promptly by lavage or by induction of emesis with syrup of ipecac. The installation of activated charcoal into the stomach also should be considered. The treatment of overdose is essentially symptomatic and supportive. If respiratory depression is present, treat promptly with oxygen and/or mechanical support of ventilation. If convulsions or marked CNS excitement occurs, only short-acting benzodiazepine-type drugs should be used.
+
+SPL TEXT:
+Dallergy Chlorpheniramine Maleate, Phenylephrine Hydrochloride, Methscopolamine Nitrate Chlorpheniramine Maleate Chlorpheniramine Phenylephrine Hydrochloride Phenylephrine Methscopolamine Nitrate Methscopolamine
