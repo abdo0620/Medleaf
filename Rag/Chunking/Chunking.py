@@ -1,8 +1,8 @@
 import dotenv
 from google.genai.local_tokenizer import LocalTokenizer
+from path import Path
 dotenv.load_dotenv()
-
-
+print()
 sep = ["\n\n","\n",".",","]
 tokenizer = LocalTokenizer(model_name="gemini-2.5-flash")
 
