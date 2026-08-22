@@ -50,84 +50,48 @@ for drug in results:
 
         if any([indications, warnings, dosage, adverse, description]):
 
-            text = f"""
-DRUG NAME: {brand_name}
+            header = f"""DRUG NAME: {brand_name}
 GENERIC NAME: {generic_name}
 MANUFACTURER: {manufacturer}
-ROUTE: {route}
-
-ACTIVE INGREDIENT:
-{active_ingr}
-
-INACTIVE INGREDIENTS:
-{inactive_ingr}
-
-DESCRIPTION:
-{description}
-
-CLINICAL PHARMACOLOGY:
-{clinical_pharm}
-
-MECHANISM OF ACTION:
-{mechanism}
-
-INDICATIONS AND USAGE:
-{indications}
-
-CONTRAINDICATIONS:
-{contraindic}
-
-BOXED WARNING:
-{boxed_warning}
-
-WARNINGS:
-{warnings}
-
-DO NOT USE:
-{do_not_use}
-
-ASK A DOCTOR BEFORE USE:
-{ask_doctor}
-
-PRECAUTIONS:
-{precautions}
-
-DOSAGE AND ADMINISTRATION:
-{dosage}
-
-ADVERSE REACTIONS:
-{adverse}
-
-DRUG INTERACTIONS:
-{interactions}
-
-USE IN PREGNANCY:
-{pregnancy}
-
-NURSING MOTHERS:
-{nursing}
-
-PEDIATRIC USE:
-{pediatric}
-
-GERIATRIC USE:
-{geriatric}
-
-OVERDOSAGE:
-{overdosage}
-
-STOP USE IF:
-{stop_use}
-
-CLINICAL STUDIES:
-{clinical_studies}
-
-STORAGE AND HANDLING:
-{storage}
-
-SPL TEXT :
-{spl_text}
-""".strip()
+ROUTE: {route}"""
+ 
+            sections = [
+                ("ACTIVE INGREDIENT", active_ingr),
+                ("INACTIVE INGREDIENTS", inactive_ingr),
+                ("DESCRIPTION", description),
+                ("CLINICAL PHARMACOLOGY", clinical_pharm),
+                ("MECHANISM OF ACTION", mechanism),
+                ("INDICATIONS AND USAGE", indications),
+                ("CONTRAINDICATIONS", contraindic),
+                ("BOXED WARNING", boxed_warning),
+                ("WARNINGS", warnings),
+                ("DO NOT USE", do_not_use),
+                ("ASK A DOCTOR BEFORE USE", ask_doctor),
+                ("PRECAUTIONS", precautions),
+                ("DOSAGE AND ADMINISTRATION", dosage),
+                ("ADVERSE REACTIONS", adverse),
+                ("DRUG INTERACTIONS", interactions),
+                ("USE IN PREGNANCY", pregnancy),
+                ("NURSING MOTHERS", nursing),
+                ("PEDIATRIC USE", pediatric),
+                ("GERIATRIC USE", geriatric),
+                ("OVERDOSAGE", overdosage),
+                ("STOP USE IF", stop_use),
+                ("CLINICAL STUDIES", clinical_studies),
+                ("STORAGE AND HANDLING", storage),
+                ("SPL TEXT", spl_text),
+            ]
+ 
+            # Only keep sections that actually have content (non-empty after stripping)
+            body_parts = [
+                f"{label}:\n{value.strip()}"
+                for label, value in sections
+                if value and value.strip()
+            ]
+ 
+            text = header + "\n\n" + "\n\n".join(body_parts)
+            text = text.strip()
+ 
         
 
         meta_data=dict()
@@ -148,6 +112,5 @@ SPL TEXT :
         total_saved += 1
         meta_json.close()
 
-print(f"Saved {total_saved} drugs so far...")
 
 print("Done! Total saved:", total_saved)

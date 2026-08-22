@@ -16,9 +16,8 @@ REQUIREMENTS:
 import streamlit as st
 from pathlib import Path
 import sys
+sys.path.append('c:\\Users\\Lenovo PC\\OneDrive\\Documents\\IMT ATLANTIQUE\\INFO\\rag_mroc')
 
-
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from Rag import agent
 
 st.set_page_config(page_title="MedLeaf", page_icon="app/assets/images/Gemini_Generated_Image_8yo9v28yo9v28yo9.png", layout="centered")
@@ -65,7 +64,9 @@ if query:
                     st.markdown(f"**Chunk {i}**")
                     st.caption(c)
 
-    st.session_state.history.append((query, answer))
+    st.session_state.history.append({"role":"user","content":query})
+    st.session_state.history.append({"role":"assistant","content":answer})
+
     st.session_state.display_log.append((query, answer, chunks))
 
 st.divider()

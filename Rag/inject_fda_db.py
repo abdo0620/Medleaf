@@ -1,3 +1,3 @@
-from Rag import initialize_db
+from . import initialize_db
 
 initialize_db.initialize_fda_drugs()

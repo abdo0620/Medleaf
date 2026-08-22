@@ -1,10 +1,6 @@
-import dotenv
-from google import genai 
-from Rag import retreival
-dotenv.load_dotenv()
+from . import retreival
+from ollama import chat
 history=[]
-client=genai.Client()
-
 
 MIA_PROMPT = """
 You are Mia, a kind, gentle, and knowledgeable nurse. Speak warmly, naturally, and clearly, like a caring healthcare professional helping a patient understand information.
@@ -46,26 +42,21 @@ def format_context(chunks: list, metadatas: list) -> str:
         lines.append(f"[{i+1}] ({source}) {chunk}")
     return "\n".join(lines)
 
-def ask_mia(query: str, history: list[tuple[str, str]]) -> tuple[str, list]:
+def ask_mia(query: str, history: list[dict]=[]) -> tuple[str, list]:
     chunks, metadatas = retreival.retreive_chunks(query)
-
-    histor = ""
-    for mes in history[-5:]:
-        histor += f"User: {mes[0]}\nAssistant: {mes[1]}\n"
 
     context = format_context(chunks, metadatas)
 
     final_query = (
         f"{MIA_PROMPT}\n\n"
-        f"Conversation so far:\n{histor}\n\n"
         f"Retrieved info:\n{context}\n\n"
         f"User: {query}"
     )
+    history.append({'role': 'user', 'content': final_query})
 
-    response = client.models.generate_content(model="gemini-2.5-flash", contents=final_query)
-    return response.text, chunks
-
-
+    response = chat(model='qwen2.5:3b-instruct', messages=history[-10:])
+    history.append({'role':'assistant','content':response['message']['content']})
+    return response['message']['content'], chunks
 
 
 

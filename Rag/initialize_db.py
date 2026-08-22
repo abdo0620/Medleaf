@@ -1,13 +1,13 @@
 import os
-from Rag import Chunking
+from . import Chunking
 import uuid
 import json
-from Rag import db
+from . import db
 import fitz  
 
 collection=db.get_collec()
 
-def inialize_fda_drugs() -> None:
+def initialize_fda_drugs() -> None:
     doc_list=os.listdir("files/drug_text_files")
     j=0
     for i in doc_list:
