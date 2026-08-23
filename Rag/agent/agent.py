@@ -1,5 +1,11 @@
-from .retreival import retreival
 from ollama import chat
+import sys 
+from path import Path 
+
+ROOT_DIR=Path(__file__).parent.parent
+
+sys.path.append(ROOT_DIR / "retreival")
+import retreival
 history=[]
 
 MIA_PROMPT = """

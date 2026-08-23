@@ -1,18 +1,25 @@
 import os
-import Rag.agent.Chunking.Chunking as Chunking
+import sys
+from path import Path
 import uuid
 import json
-from . import db
 import fitz  
+
+ROOT_DIR=Path(__file__).parent.parent
+DIR=Path(__file__)
+sys.path.append(ROOT_DIR)
+sys.path.append(DIR.parent)
+from Chunking import Chunking
+import db
 
 collection=db.get_collec()
 
 def initialize_fda_drugs() -> None:
-    doc_list=os.listdir("files/drug_text_files")
+    doc_list=os.listdir(DIR.parent / "files" / "drug_text_files")
     j=0
     for i in doc_list:
-        reader=open("files/drug_text_files/" + i,"r",encoding="utf-8")
-        jsoni =open("files/drug_json_files/"+i[:len(i)-3]+"json","r")
+        reader=open(DIR.parent / "files" / "drug_text_files" / i,"r",encoding="utf-8")
+        jsoni =open(DIR.parent / "files" / "drug_json_files" / (i[:len(i)-3]+"json"),"r")
         data=json.load(jsoni)
 
         meta={"safe_name" : data["safe_name"],"safe_spl" : data["safe_spl"]}
@@ -25,7 +32,7 @@ def initialize_fda_drugs() -> None:
 
 
 
-DOCS_DIR = "files/documents_injected"
+DOCS_DIR = DIR.parent / "files" / "documents_injected"
 
 def add_vector_db() -> None:
 

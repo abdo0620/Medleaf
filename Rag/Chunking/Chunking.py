@@ -1,10 +1,11 @@
 import dotenv
-from google.genai.local_tokenizer import LocalTokenizer
-from path import Path
-dotenv.load_dotenv()
-print()
+import requests
+from path import Path 
+import sys
+PARENT_DIR  = Path(__file__).parent 
+sys.path.append(PARENT_DIR)
+from tokenizer import count_tokens_ollama
 sep = ["\n\n","\n",".",","]
-tokenizer = LocalTokenizer(model_name="gemini-2.5-flash")
 
 def closest_space(text:str,overlap:float) ->  str:
     assert 0 <= overlap and overlap <= 1,"overlap value must be bettween 0 and 1"
@@ -28,7 +29,7 @@ def chunking(text: str, token_limit: int, sepa=sep) -> list[str]:
     text = text.strip()
     if text == "":
         return []
-    if tokenizer.count_tokens(text).total_tokens < token_limit:
+    if count_tokens_ollama(text).total_tokens < token_limit:
         return [text]
     if sepa == []:
         return [text] 
@@ -42,7 +43,7 @@ def chunking(text: str, token_limit: int, sepa=sep) -> list[str]:
         p = p.strip()
         if p == "":
             continue
-        if tokenizer.count_tokens(p).total_tokens >= token_limit:
+        if count_tokens_ollama(p).total_tokens >= token_limit:
             processed.extend(chunking(p, token_limit, sepa=next_sepa))
         else:
             processed.append(p)
@@ -51,7 +52,7 @@ def chunking(text: str, token_limit: int, sepa=sep) -> list[str]:
     current = ""
     for piece in processed:
         candidate = piece if current == "" else current + separator + piece
-        if tokenizer.count_tokens(candidate).total_tokens < token_limit:
+        if count_tokens_ollama(candidate).total_tokens < token_limit:
             current = candidate
         else:
             if current:

@@ -7,7 +7,6 @@ génération via ta pipeline RAG existante, puis évaluation avec 4 métriques D
 
 Place ce fichier dans: Evaluation/RAG/ (à côté de Golden_dataset.json)
 """
-import time
 
 import json
 import os

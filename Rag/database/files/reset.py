@@ -1,14 +1,12 @@
 import os
-
-i=os.listdir("files/drug_text_files/")
-j=os.listdir("files/drug_json_files/")
+from path import Path 
+PARENT_DIR= Path(__file__).parent
+i=os.listdir(PARENT_DIR / "drug_text_files")
+j=os.listdir(PARENT_DIR / "drug_json_files")
 for file in i :
-    if file[-4:]==".txt":
-        os.remove("files/drug_text_files/"+ file)
+        os.remove(PARENT_DIR /"drug_text_files"/ file)
 
 for file in j :
-    if file[-5:]==".json":
-        os.remove("files/drug_json_files/"+ file)
-        
+        os.remove(PARENT_DIR / "drug_json_files"/ file)
 
         

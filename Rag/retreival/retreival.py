@@ -1,5 +1,9 @@
-from ...database import db
-
+from path import Path 
+import sys
+ROOT_DIR = Path(__file__).parent.parent
+DB_DIR=ROOT_DIR / "database" 
+sys.path.append(DB_DIR)
+import db 
 collection=db.get_collec()
 
 def retreive_chunks(query:str) :

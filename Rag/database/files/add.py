@@ -1,9 +1,10 @@
 import requests, json
 import os
-
+from path import Path 
+PARENT_DIR=Path(__file__).parent 
 total_saved = 0
-os.makedirs("files/drug_json_files", exist_ok=True)
-os.makedirs("files/drug_text_files", exist_ok=True)
+os.makedirs(PARENT_DIR / "drug_json_files", exist_ok=True)
+os.makedirs(PARENT_DIR / "drug_text_files", exist_ok=True)
 
 
 
@@ -98,8 +99,8 @@ ROUTE: {route}"""
 
         safe_name = brand_name.replace(" ", "_").replace("/", "_")[:50]
         safe_spl=spl_text.replace(" ", "_").replace("/", "_")[:200]
-        filename = f"files/drug_text_files/drug_{total_saved:04d}_{safe_name}.txt"
-        filename_json = f"files/drug_json_files/drug_{total_saved:04d}_{safe_name}.json"
+        filename = PARENT_DIR / "drug_text_files" / f"drug_{total_saved:04d}_{safe_name}.txt"
+        filename_json = PARENT_DIR / "drug_json_files" / f"drug_{total_saved:04d}_{safe_name}.json"
         meta_json=open(filename_json,"w")
 
 
