@@ -73,5 +73,5 @@ if query:
     st.session_state.display_log.append((query, answer, chunks))
 
 st.divider()
-st.caption("MedLeaf · (FDA API + Uploaded documents) → Chunking.py → ChromaDB → Gemini")
+st.caption("MedLeaf · (FDA API + Uploaded documents) → Chunking.py → ChromaDB → Ollama")
 

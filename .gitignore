@@ -4,3 +4,4 @@ Rag/database/files/drug_json_files/
 Rag/database/files/documents_injected/
 Rag/database/Vectordb/
 __pycache__/
+.deepeval
