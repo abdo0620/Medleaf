@@ -4,7 +4,8 @@ from path import Path
 import uuid
 import json
 import fitz  
-
+CHUNK_LIMIT=600
+OVERLAP=0.15
 ROOT_DIR=Path(__file__).parent.parent
 DIR=Path(__file__)
 sys.path.append(ROOT_DIR)
@@ -25,7 +26,7 @@ def initialize_fda_drugs() -> None:
         meta={"safe_name" : data["safe_name"],"safe_spl" : data["safe_spl"]}
         text=reader.read()
         l=[]
-        l += Chunking.rec_chunk(text,600,0.15)
+        l += Chunking.rec_chunk(text,CHUNK_LIMIT,OVERLAP)
         collection.add( documents = l , ids=[str(uuid.uuid4()) for _ in range(len(l))],metadatas=[meta for _ in range(len(l))])
         j+=1
         print(j)
@@ -50,7 +51,7 @@ def add_vector_db() -> None:
 
             meta = {"safe_name": i, "source_type": "pdf"}
 
-            l = Chunking.rec_chunk(text, 600, 0.15)
+            l = Chunking.rec_chunk(text, CHUNK_LIMIT, OVERLAP)
             collection.add(
                 documents=l,
                 ids=[str(uuid.uuid4()) for _ in range(len(l))],
@@ -64,7 +65,7 @@ def add_vector_db() -> None:
 
             meta = {"safe_name": i, "source_type": "txt"}
 
-            l = Chunking.rec_chunk(text, 1000, 0.15)
+            l = Chunking.rec_chunk(text, CHUNK_LIMIT, OVERLAP)
             collection.add(
                 documents=l,
                 ids=[str(uuid.uuid4()) for _ in range(len(l))],

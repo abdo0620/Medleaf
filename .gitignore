@@ -1,4 +1,6 @@
-Rag/.env
-files/drug_text_files/
-files/drug_json_files/
-files/documents_injected/
+.env/
+Rag/database/files/drug_text_files/
+Rag/database/files/drug_json_files/
+Rag/database/files/documents_injected/
+Rag/database/Vectordb/
+__pycache__/
