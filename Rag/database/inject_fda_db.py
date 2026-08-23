@@ -1,3 +1,5 @@
+"""Entry point for indexing the downloaded FDA labels."""
+
 import sys 
 from path import Path 
 PARENT_DIR=Path(__file__).parent 

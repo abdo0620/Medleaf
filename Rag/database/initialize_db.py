@@ -1,3 +1,5 @@
+"""Build the Chroma collection from FDA and user-uploaded documents."""
+
 import os
 import sys
 from path import Path
@@ -16,6 +18,9 @@ import db
 collection=db.get_collec()
 
 def initialize_fda_drugs() -> None:
+    """Read FDA text and metadata files, chunk them, and add them to Chroma."""
+    # FDA records carry metadata separately from their text; preserving it on
+    # every chunk keeps source attribution available during retrieval.
     doc_list=os.listdir(DIR.parent / "files" / "drug_text_files")
     j=0
     for i in doc_list:
@@ -36,7 +41,10 @@ def initialize_fda_drugs() -> None:
 DOCS_DIR = DIR.parent / "files" / "documents_injected"
 
 def add_vector_db() -> None:
+    """Index uploaded PDF and TXT documents, then remove their source files."""
 
+    # Uploaded files are treated as a one-time ingestion queue. Removing each
+    # source after indexing prevents accidental duplicate embeddings on reruns.
     doc_list = os.listdir(DOCS_DIR)
     j = 0
     for i in doc_list:

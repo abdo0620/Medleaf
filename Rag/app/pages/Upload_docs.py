@@ -1,3 +1,5 @@
+"""Streamlit page for uploading and indexing medication documents."""
+
 import streamlit as st
 from path import Path
 import sys

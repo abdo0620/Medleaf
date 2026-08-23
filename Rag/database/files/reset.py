@@ -1,3 +1,5 @@
+"""Remove generated FDA text and JSON files from the local data folders."""
+
 import os
 from path import Path 
 PARENT_DIR= Path(__file__).parent

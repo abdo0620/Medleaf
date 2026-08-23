@@ -1,3 +1,5 @@
+"""Streamlit page describing the MedLeaf project and its author."""
+
 import streamlit as st
 import base64
 from path import Path

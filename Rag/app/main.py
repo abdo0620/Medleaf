@@ -1,3 +1,5 @@
+"""Configure and launch the Streamlit pages for the MedLeaf application."""
+
 import streamlit as st
 
 Home=st.Page("pages/app.py",title="Talk To Mia", icon="🩺")

@@ -1,3 +1,5 @@
+"""Download human prescription labels from the FDA API into local files."""
+
 import requests, json
 import os
 from path import Path 

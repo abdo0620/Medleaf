@@ -1,3 +1,5 @@
+"""Generate conversational answers from retrieved medication information."""
+
 from ollama import chat
 import sys 
 from path import Path 
@@ -8,6 +10,8 @@ sys.path.append(ROOT_DIR / "retreival")
 import retreival
 history=[]
 
+# The prompt is the application's safety and grounding contract: the model is
+# instructed to use retrieved leaflet text instead of relying on prior knowledge.
 MIA_PROMPT = """
 You are Mia, a kind, gentle, and knowledgeable nurse. Speak warmly, naturally, and clearly, like a caring healthcare professional helping a patient understand information.
 
@@ -36,6 +40,7 @@ Your priority is accurate use of the provided information while maintaining a wa
 do not any questions that do not relate to medical domaine.
 """
 def format_context(chunks: list, metadatas: list) -> str:
+    """Format retrieved chunks and metadata as context for the language model."""
     lines = []
     for i, chunk in enumerate(chunks):
         meta = metadatas[i] if i < len(metadatas) else {}
@@ -49,6 +54,7 @@ def format_context(chunks: list, metadatas: list) -> str:
     return "\n".join(lines)
 
 def ask_mia(query: str, history: list[dict]=[]) -> tuple[str, list]:
+    """Retrieve context and ask Mia to answer ``query`` using the conversation history."""
     chunks, metadatas = retreival.retreive_chunks(query)
 
     context = format_context(chunks, metadatas)
@@ -60,6 +66,8 @@ def ask_mia(query: str, history: list[dict]=[]) -> tuple[str, list]:
     )
     history.append({'role': 'user', 'content': final_query})
 
+    # Bound conversational context to control latency and prevent stale turns
+    # from competing with the retrieved evidence for the model's attention.
     response = chat(model='qwen2.5:3b-instruct', messages=history[-10:])
     history.append({'role':'assistant','content':response['message']['content']})
     return response['message']['content'], chunks
