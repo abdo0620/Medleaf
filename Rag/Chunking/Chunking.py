@@ -1,5 +1,4 @@
-import dotenv
-import requests
+
 from path import Path 
 import sys
 PARENT_DIR  = Path(__file__).parent 
@@ -29,7 +28,7 @@ def chunking(text: str, token_limit: int, sepa=sep) -> list[str]:
     text = text.strip()
     if text == "":
         return []
-    if count_tokens_ollama(text).total_tokens < token_limit:
+    if count_tokens_ollama(text) < token_limit:
         return [text]
     if sepa == []:
         return [text] 
@@ -43,7 +42,7 @@ def chunking(text: str, token_limit: int, sepa=sep) -> list[str]:
         p = p.strip()
         if p == "":
             continue
-        if count_tokens_ollama(p).total_tokens >= token_limit:
+        if count_tokens_ollama(p) >= token_limit:
             processed.extend(chunking(p, token_limit, sepa=next_sepa))
         else:
             processed.append(p)
@@ -52,7 +51,7 @@ def chunking(text: str, token_limit: int, sepa=sep) -> list[str]:
     current = ""
     for piece in processed:
         candidate = piece if current == "" else current + separator + piece
-        if count_tokens_ollama(candidate).total_tokens < token_limit:
+        if count_tokens_ollama(candidate)< token_limit:
             current = candidate
         else:
             if current:
