@@ -1,9 +1,9 @@
-"""Helpers for obtaining token counts from the local Ollama service."""
+"""Helpers for counting tokens locally """
 
-import requests
+import tiktoken
 
-def count_tokens_ollama(text, model="nomic-embed-text", url="http://localhost:11434"):
-    """Return the number of prompt tokens reported by Ollama for ``text``."""
-    resp = requests.post(f"{url}/api/embed", json={"model": model, "input": text})
-    resp.raise_for_status()
-    return resp.json()["prompt_eval_count"]
+_enc = tiktoken.get_encoding("cl100k_base")  
+
+def count_tokens_ollama(text):
+    """Return an estimated token count for `text`"""
+    return len(_enc.encode(text))
