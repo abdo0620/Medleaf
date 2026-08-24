@@ -1,19 +1,19 @@
-# MedLeaf Dockerized
+# MedLeaf
 
-MedLeaf is a Dockerized Streamlit application built to make medication leaflet information easier to explore, understand, and discuss. It combines a modern web interface with a retrieval-augmented generation (RAG) workflow so users can ask questions about medical documents, upload their own leaflets, and receive answers that are grounded in the actual source content.
+MedLeaf is a Streamlit application for exploring medication leaflets with a retrieval-augmented generation (RAG) assistant. Users can ask Mia questions about indexed drug information, inspect the retrieved text chunks, and upload PDF or TXT leaflets to add to the local knowledge base.
 
-What makes this project valuable is that it turns dense and often hard-to-read leaflet documents into an interactive experience. Instead of manually scanning long PDFs or text files, a user can simply ask questions and get relevant, document-based answers in a conversational way.
+The assistant runs locally with Ollama and the `qwen2.5:3b-instruct` model. Answers are generated from text retrieved from a persistent Chroma database rather than from a hosted Gemini API.
 
-![MedLeaf interface](app/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png)
+![MedLeaf interface](Rag/app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png)
 
-## Why this project matters
-- It helps users interact with medical documents in a more intuitive way.
-- It supports document-grounded answers instead of generic chatbot responses.
-- It lets users upload their own files and build a custom knowledge base.
-- It is fully containerized, making deployment and reuse much easier.
+> MedLeaf is an educational document-search tool, not a substitute for a doctor, pharmacist, or official medication leaflet. Always verify medical decisions with a qualified professional.
 
 ## App showcase
-Here are the main screens that show how the application works in practice.
+The application has three Streamlit pages:
+
+- **Talk To Mia** — ask questions about the indexed medication documents.
+- **Upload Your Documents** — add PDF or TXT files to the ingestion queue and index them.
+- **About me** — project and author information.
 
 ### Main interface
 ![Main app interface](screenshots/Screenshot%202026-07-22%20121857.png)
@@ -24,93 +24,101 @@ Here are the main screens that show how the application works in practice.
 ![Upload documents](screenshots/Screenshot%202026-07-22%20122503.png)
 
 
-## What the application does
-- Offers a multi-page Streamlit experience with dedicated sections for conversation, document upload, and project information
-- Lets users ask questions about medication content through a chat-style assistant
-- Allows users to upload PDF or TXT files and index them into the system
-- Retrieves the most relevant document chunks before generating an answer
-- Uses a Dockerized setup so the application is easy to run and share
+## How it works
+1. FDA label data is downloaded into `Rag/database/files/` by `Rag/database/files/add.py`.
+2. `Rag/database/inject_fda_db.py` chunks the FDA text and stores embeddings in Chroma.
+3. A user asks Mia a question in the Streamlit chat.
+4. The retriever returns the three most relevant chunks from the `mrooc` collection.
+5. Ollama generates an answer using those chunks and the conversation history.
+6. Uploaded PDF and TXT files are chunked, embedded, and removed from the temporary ingestion queue after indexing.
 
-## Technologies used
-- Python 3.12+
-- Streamlit for the interface
-- Chroma vector database for semantic search and retrieval
-- Google Gemini / `google-genai` for answer generation
-- `python-dotenv` for environment management
-- `fitz` for extracting text from PDF files
-- Docker and Docker Compose for containerized deployment
+## Technologies
+- Python 3.12
+- Streamlit 1.58
+- ChromaDB 1.5.9 for persistent vector storage
+- Ollama with `qwen2.5:3b-instruct` for local answer generation
+- PyMuPDF for PDF text extraction
+- `tiktoken` for token counting during chunking
+- Docker and Docker Compose configuration
 
 ## Prerequisites
-Before running the app, make sure Docker is installed on your machine:
-- Windows: Docker Desktop
-- macOS: Docker Desktop
-- Linux: Docker Engine + Docker Compose
+- Docker Desktop on Windows and macOS, or Docker Engine with Compose on Linux
+- Ollama installed and running
+- The Ollama model `qwen2.5:3b-instruct`
 
-You will also need a valid Gemini or Google API key for the AI generation part of the application.
-
-## Quick start with Docker
-From the project root, run the following command:
+## Run with Docker
+From the project root, build and start the application:
 
 ```bash
 docker compose up --build
 ```
 
-This will build the image and start the container. Once the application is running, open your browser at:
-
-```text
-http://localhost:8501
-```
-
-### Stop the application
-To stop the running container, press:
+The application is then available at [http://localhost:8501](http://localhost:8501). Ollama must be running where the application can reach it, and the model must be downloaded before asking questions:
 
 ```bash
-Ctrl+C
+ollama serve
+ollama pull qwen2.5:3b-instruct
 ```
 
-If you want to stop and remove the container completely, run:
+To stop the application, press `Ctrl+C`. To stop and remove the container, run:
 
 ```bash
 docker compose down
 ```
 
-## Environment configuration
-Create a file named `Rag/.env` and add your API key in one of the following formats:
+The Compose configuration persists the Chroma database and document files through mounted volumes, so indexed data remains available after the container is restarted.
 
-```env
-GEMINI_API_KEY=your_gemini_api_key_here
-# or
-GOOGLE_API_KEY=your_google_api_key_here
+## Run locally
+From the project root, create and activate a virtual environment, then install the dependencies:
+
+```bash
+python -m venv .env
+.env/Scripts/activate       # Windows PowerShell
+source .env/bin/activate   # macOS/Linux
+pip install -r requirements.txt
 ```
 
-The Docker Compose configuration automatically loads this file through the `env_file` setting, so the application can access the credential at runtime.
+Launch the application:
 
-## How the system works
-1. A user uploads PDF or TXT documents through the Streamlit interface.
-2. The uploaded files are processed and indexed into the Chroma vector database.
-3. When a user submits a question, the system converts it into a semantic query.
-4. The most relevant document chunks are retrieved from the database.
-5. The Gemini-based agent generates a clear answer grounded in the retrieved content.
+```bash
+streamlit run Rag/app/main.py
+```
 
-This makes the app more reliable than a general chatbot because the output is tied directly to the documents provided by the user.
+## Populate the FDA database
+The repository includes FDA label data under `Rag/database/files/`. To download a fresh set of human prescription labels and index it:
+
+```bash
+python Rag/database/files/add.py
+python Rag/database/inject_fda_db.py
+```
+
+The indexed data is persisted in `Rag/database/Vectordb/`. Run the injection step again only when you want to add newly downloaded data.
+
+## Upload documents
+Use the **Upload Your Documents** page to upload PDF or TXT leaflets. The page sends files to the ingestion queue, chunks and embeds them, adds them to Chroma, and removes the queued source files after successful processing.
 
 ## Project structure
-The repository is organized as follows:
-- `app/main.py` — the entry point that manages Streamlit navigation
-- `app/app.py` — the conversational chat page for asking questions
-- `app/pages/Upload_docs.py` — the page for uploading and indexing documents
-- `app/pages/About_me.py` — the informational page about the project and author
-- `Rag/` — the backend logic for chunking, retrieval, agent interaction, and database initialization
-- `Vectordb/` — the persisted vector database storage mounted into the container
-- `files/` — uploaded documents and support files mounted into the container
-- `Dockerfile` and `docker-compose.yml` — container build and runtime configuration
+```text
+Rag/
+├── agent/                  # Mia prompt and Ollama integration
+├── app/
+│   ├── main.py             # Streamlit navigation entry point
+│   ├── assets/             # Logos and assistant avatar
+│   └── pages/              # Chat, upload, and About pages
+├── Chunking/               # Recursive token-aware text chunking
+├── database/
+│   ├── db.py               # Persistent Chroma client and collection
+│   ├── initialize_db.py    # FDA and uploaded-document indexing
+│   ├── inject_fda_db.py    # FDA indexing script
+│   └── files/              # FDA data and document ingestion folders
+└── retreival/              # Similarity search over Chroma
+eval/                       # Evaluation data and test script
+requirements.txt            # Python dependencies
+```
 
-## Notes
-The Docker setup keeps your data persistent by mounting the local `Vectordb/` and `files/` folders into the container. This means your vector index and uploaded documents remain available even if the container is restarted.
+## Configuration
+No Gemini or Google API key is required. Ollama must be available at its default local endpoint, and the model name used by the application is configured directly in `Rag/agent/agent.py`:
 
-- Python 3.12
-- Streamlit
-- Docker and Docker Compose
-- Chroma vector database
-- Google Gemini / google-genai
-- sentencepiece
+```text
+qwen2.5:3b-instruct
+```
