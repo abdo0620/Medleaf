@@ -49,7 +49,7 @@ def add_vector_db() -> None:
         file_name = file_path.name
 
         if file_path.suffix.lower() == ".pdf":
-            doc = fitz.open(file_path)
+            doc = fitz.open(str(file_path))
             text = ""
             for page in doc:
                 text += page.get_text()

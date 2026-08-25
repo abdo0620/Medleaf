@@ -19,11 +19,11 @@ import sys
 ROOT=Path(__file__).parent.parent.parent.parent
 print(ROOT)
 
-sys.path.append(ROOT / "Rag" / "agent")
+sys.path.append(str(ROOT / "Rag" / "agent"))
 
 import agent
 
-st.set_page_config(page_title="MedLeaf", page_icon=ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_8yo9v28yo9v28yo9.png"), layout="centered")
+st.set_page_config(page_title="MedLeaf", page_icon=str(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_8yo9v28yo9v28yo9.png")), layout="centered")
 
 
 # ──────────────────────────────────────────────────────────────────────────
@@ -38,16 +38,16 @@ if "display_log" not in st.session_state:
 # UI
 # ──────────────────────────────────────────────────────────────────────────
 
-st.image(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png"), use_container_width=True)
-st.logo(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png"),size="large")
+st.image(str(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png")), use_container_width=True)
+st.logo(str(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png")),size="large")
 st.caption("Conversational RAG Agent for Drug Leaflet Understanding - talk to Mia")
 st.divider()
 
-st.chat_message("assistant",avatar=ROOT / "Rag" / Path("app/assets/images/female-doctor-to-explain-svgrepo-com.svg")).write("Helloo, I am Mia, how can I help you today?")
+st.chat_message("assistant",avatar=str(ROOT / "Rag" / Path("app/assets/images/female-doctor-to-explain-svgrepo-com.svg"))).write("Helloo, I am Mia, how can I help you today?")
 
 for q, a, chunks in st.session_state.display_log:
     st.chat_message("user").write(q)
-    with st.chat_message("assistant",avatar=ROOT / "Rag" / Path("app/assets/images/female-doctor-to-explain-svgrepo-com.svg")):
+    with st.chat_message("assistant",avatar=str(ROOT / "Rag" / Path("app/assets/images/female-doctor-to-explain-svgrepo-com.svg"))):
         st.write(a)
         with st.expander("View retrieved chunks"):
             for i, c in enumerate(chunks, 1):
@@ -58,7 +58,7 @@ query = st.chat_input("Ask Mia about a medication...")
 
 if query:
     st.chat_message("user").write(query)
-    with st.chat_message("assistant",avatar=ROOT / "Rag" / Path("app/assets/images/female-doctor-to-explain-svgrepo-com.svg")):
+    with st.chat_message("assistant",avatar=str(ROOT / "Rag" / Path("app/assets/images/female-doctor-to-explain-svgrepo-com.svg"))):
         with st.spinner("Mia is reading the leaflets..."):
             answer, chunks = agent.ask_mia(query, st.session_state.history)
             st.write(answer)

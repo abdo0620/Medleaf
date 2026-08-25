@@ -6,7 +6,7 @@ from pathlib import Path
 PARENT_DIR=Path(__file__).parent
 
 
-vector_db=cdb.PersistentClient(PARENT_DIR / "Vectordb")
+vector_db=cdb.PersistentClient(str(PARENT_DIR / "Vectordb"))
 
 def get_collec():
   """Get or create the application's medication document collection."""

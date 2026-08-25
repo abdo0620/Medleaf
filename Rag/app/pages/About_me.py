@@ -14,7 +14,7 @@ def icon_src(path: str) -> str:
     return f"data:image/png;base64,{data}"
 
 st.set_page_config(page_title="About Me — MedLeaf", page_icon="app/assets/images/Gemini_Generated_Image_8yo9v28yo9v28yo9.png", layout="centered")
-st.logo(DIR.parent.parent / Path("assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png"),size="large")
+st.logo(str(DIR.parent.parent / Path("assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png")),size="large")
 
 # ---------- styling ----------
 st.markdown("""
@@ -141,10 +141,10 @@ vector databases, conversational agents</p>
 
 # ---------- contact ----------
 # Point these at your own icon PNGs, e.g. "icons/email.png"
-icon_email = icon_src(DIR.parent.parent  / Path("assets/logos/Gmail_Logo_512px.webp"))
-icon_github = icon_src(DIR.parent.parent  / Path("assets/logos/github.png"))
-icon_linkedin = icon_src(DIR.parent.parent  / Path("assets/logos/LinkedIn_logo_initials.png"))
-icon_kaggle = icon_src(DIR.parent.parent  / Path("assets/logos/kaggle_logo_icon_168473.png"))
+icon_email = icon_src(str(DIR.parent.parent / Path("assets/logos/Gmail_Logo_512px.webp")))
+icon_github = icon_src(str(DIR.parent.parent / Path("assets/logos/github.png")))
+icon_linkedin = icon_src(str(DIR.parent.parent / Path("assets/logos/LinkedIn_logo_initials.png")))
+icon_kaggle = icon_src(str(DIR.parent.parent / Path("assets/logos/kaggle_logo_icon_168473.png")))
 
 st.markdown(f"""
 <div class="card">

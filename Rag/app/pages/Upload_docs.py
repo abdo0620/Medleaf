@@ -7,8 +7,8 @@ ROOT =Path(__file__).parent.parent.parent.parent
 sys.path.append(str(ROOT / "Rag" / "database"))
 import initialize_db
 
-st.set_page_config(page_title="MedLeaf", page_icon=ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_8yo9v28yo9v28yo9.png"), layout="centered")
-st.logo(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png"),size="large")
+st.set_page_config(page_title="MedLeaf", page_icon=str(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_8yo9v28yo9v28yo9.png")), layout="centered")
+st.logo(str(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png")),size="large")
 
 
 st.title("Upload Your Documents",text_alignment="center")
