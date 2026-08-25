@@ -2,11 +2,11 @@
 
 from ollama import chat
 import sys 
-from path import Path 
+from pathlib import Path
 
 ROOT_DIR=Path(__file__).parent.parent
 
-sys.path.append(ROOT_DIR / "retreival")
+sys.path.append(str(ROOT_DIR / "retreival"))
 import retreival
 history=[]
 

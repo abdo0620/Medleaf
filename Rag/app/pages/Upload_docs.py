@@ -1,10 +1,10 @@
 """Streamlit page for uploading and indexing medication documents."""
 
 import streamlit as st
-from path import Path
+from pathlib import Path
 import sys
 ROOT =Path(__file__).parent.parent.parent.parent 
-sys.path.append(ROOT / "Rag" / "database")
+sys.path.append(str(ROOT / "Rag" / "database"))
 import initialize_db
 
 st.set_page_config(page_title="MedLeaf", page_icon=ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_8yo9v28yo9v28yo9.png"), layout="centered")

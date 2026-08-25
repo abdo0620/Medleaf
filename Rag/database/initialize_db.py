@@ -1,8 +1,7 @@
 """Build the Chroma collection from FDA and user-uploaded documents."""
 
-import os
 import sys
-from path import Path
+from pathlib import Path
 import uuid
 import json
 import fitz  
@@ -10,8 +9,8 @@ CHUNK_LIMIT=210
 OVERLAP=0.15
 ROOT_DIR=Path(__file__).parent.parent
 DIR=Path(__file__)
-sys.path.append(ROOT_DIR)
-sys.path.append(DIR.parent)
+sys.path.append(str(ROOT_DIR))
+sys.path.append(str(DIR.parent))
 from Chunking import Chunking
 import db
 
@@ -21,15 +20,14 @@ def initialize_fda_drugs() -> None:
     """Read FDA text and metadata files, chunk them, and add them to Chroma."""
     # FDA records carry metadata separately from their text; preserving it on
     # every chunk keeps source attribution available during retrieval.
-    doc_list=os.listdir(DIR.parent / "files" / "drug_text_files")
+    doc_list=(DIR.parent / "files" / "drug_text_files").iterdir()
     j=0
-    for i in doc_list:
-        reader=open(DIR.parent / "files" / "drug_text_files" / i,"r",encoding="utf-8")
-        jsoni =open(DIR.parent / "files" / "drug_json_files" / (i[:len(i)-3]+"json"),"r")
-        data=json.load(jsoni)
+    for text_path in doc_list:
+        json_path = DIR.parent / "files" / "drug_json_files" / f"{text_path.stem}.json"
+        data=json.loads(json_path.read_text(encoding="utf-8"))
 
         meta={"safe_name" : data["safe_name"],"safe_spl" : data["safe_spl"]}
-        text=reader.read()
+        text=text_path.read_text(encoding="utf-8")
         l=[]
         l += Chunking.rec_chunk(text,CHUNK_LIMIT,OVERLAP)
         collection.add( documents = l , ids=[str(uuid.uuid4()) for _ in range(len(l))],metadatas=[meta for _ in range(len(l))])
@@ -45,19 +43,19 @@ def add_vector_db() -> None:
 
     # Uploaded files are treated as a one-time ingestion queue. Removing each
     # source after indexing prevents accidental duplicate embeddings on reruns.
-    doc_list = os.listdir(DOCS_DIR)
+    doc_list = DOCS_DIR.iterdir()
     j = 0
-    for i in doc_list:
-        file_path = os.path.join(DOCS_DIR, i)
+    for file_path in doc_list:
+        file_name = file_path.name
 
-        if i.lower().endswith(".pdf"):
+        if file_path.suffix.lower() == ".pdf":
             doc = fitz.open(file_path)
             text = ""
             for page in doc:
                 text += page.get_text()
             doc.close()
 
-            meta = {"safe_name": i, "source_type": "pdf"}
+            meta = {"safe_name": file_name, "source_type": "pdf"}
 
             l = Chunking.rec_chunk(text, CHUNK_LIMIT, OVERLAP)
             collection.add(
@@ -67,11 +65,10 @@ def add_vector_db() -> None:
             )
             j += 1
 
-        elif i.lower().endswith(".txt"):
-            with open(file_path, "r", encoding="utf-8") as reader:
-                text = reader.read()
+        elif file_path.suffix.lower() == ".txt":
+            text = file_path.read_text(encoding="utf-8")
 
-            meta = {"safe_name": i, "source_type": "txt"}
+            meta = {"safe_name": file_name, "source_type": "txt"}
 
             l = Chunking.rec_chunk(text, CHUNK_LIMIT, OVERLAP)
             collection.add(
@@ -82,5 +79,5 @@ def add_vector_db() -> None:
             j += 1
 
           
-        os.remove(file_path)
+        file_path.unlink()
 

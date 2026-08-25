@@ -14,7 +14,7 @@ REQUIREMENTS:
     - A .env file with your Gemini API key (GEMINI_API_KEY or GOOGLE_API_KEY)
 """
 import streamlit as st
-from path import Path
+from pathlib import Path
 import sys
 ROOT=Path(__file__).parent.parent.parent.parent
 print(ROOT)

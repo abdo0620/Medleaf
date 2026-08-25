@@ -1,12 +1,11 @@
 """Download human prescription labels from the FDA API into local files."""
 
 import requests, json
-import os
-from path import Path 
+from pathlib import Path
 PARENT_DIR=Path(__file__).parent 
 total_saved = 0
-os.makedirs(PARENT_DIR / "drug_json_files", exist_ok=True)
-os.makedirs(PARENT_DIR / "drug_text_files", exist_ok=True)
+(PARENT_DIR / "drug_json_files").mkdir(parents=True, exist_ok=True)
+(PARENT_DIR / "drug_text_files").mkdir(parents=True, exist_ok=True)
 
 
 
@@ -103,10 +102,10 @@ ROUTE: {route}"""
         safe_spl=spl_text.replace(" ", "_").replace("/", "_")[:200]
         filename = PARENT_DIR / "drug_text_files" / f"drug_{total_saved:04d}_{safe_name}.txt"
         filename_json = PARENT_DIR / "drug_json_files" / f"drug_{total_saved:04d}_{safe_name}.json"
-        meta_json=open(filename_json,"w")
+        meta_json=filename_json.open("w")
 
 
-        with open(filename, "w", encoding="utf-8",) as f:
+        with filename.open("w", encoding="utf-8") as f:
                 f.write(text)
         meta_data["safe_name"]=safe_name
         meta_data["safe_spl"]=safe_spl

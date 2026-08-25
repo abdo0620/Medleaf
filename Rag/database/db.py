@@ -2,7 +2,7 @@
 
 import chromadb as cdb
 from chromadb.utils import embedding_functions
-from path import Path
+from pathlib import Path
 PARENT_DIR=Path(__file__).parent
 
 

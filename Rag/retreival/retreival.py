@@ -1,10 +1,10 @@
 """Retrieve the most relevant document chunks from the Chroma collection."""
 
-from path import Path 
+from pathlib import Path
 import sys
 ROOT_DIR = Path(__file__).parent.parent
 DB_DIR=ROOT_DIR / "database" 
-sys.path.append(DB_DIR)
+sys.path.append(str(DB_DIR))
 import db 
 collection=db.get_collec()
 

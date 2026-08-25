@@ -1,14 +1,13 @@
 """Remove generated FDA text and JSON files from the local data folders."""
 
-import os
-from path import Path 
+from pathlib import Path
 PARENT_DIR= Path(__file__).parent
-i=os.listdir(PARENT_DIR / "drug_text_files")
-j=os.listdir(PARENT_DIR / "drug_json_files")
-for file in i :
-        os.remove(PARENT_DIR /"drug_text_files"/ file)
+i=(PARENT_DIR / "drug_text_files").iterdir()
+j=(PARENT_DIR / "drug_json_files").iterdir()
+for file in i:
+        file.unlink()
 
-for file in j :
-        os.remove(PARENT_DIR / "drug_json_files"/ file)
+for file in j:
+        file.unlink()
 
         

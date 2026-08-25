@@ -1,10 +1,10 @@
 
 """Split documents into token-limited chunks with optional overlap."""
 
-from path import Path 
+from pathlib import Path
 import sys
 PARENT_DIR  = Path(__file__).parent 
-sys.path.append(PARENT_DIR)
+sys.path.append(str(PARENT_DIR))
 from tokenizer import count_tokens_ollama
 sep = ["\n\n","\n",".",","]
 

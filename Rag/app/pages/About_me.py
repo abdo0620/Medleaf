@@ -2,7 +2,7 @@
 
 import streamlit as st
 import base64
-from path import Path
+from pathlib import Path
 DIR=Path(__file__)
 def icon_src(path: str) -> str:
     """Turn a local PNG into a data URI so it can be used in an <img> tag
