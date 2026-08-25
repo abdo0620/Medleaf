@@ -27,7 +27,7 @@ if uploaded_files:
 
     st.divider()
 
-    if st.button("➕ Add to Mia's Database", width=True):
+    if st.button("➕ Add to Mia's Database", width="stretch"):
         with st.spinner("Processing, chunking, and embedding documents... Feel free to check out the 'About Me' section! 😊"):
                 saved_paths = []
                 tmp_dir = Path("files/documents_injected")
