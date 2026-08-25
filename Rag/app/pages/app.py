@@ -38,7 +38,7 @@ if "display_log" not in st.session_state:
 # UI
 # ──────────────────────────────────────────────────────────────────────────
 
-st.image(str(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png")), use_container_width=True)
+st.image(str(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png")), width="stretch")
 st.logo(str(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png")),size="large")
 st.caption("Conversational RAG Agent for Drug Leaflet Understanding - talk to Mia")
 st.divider()

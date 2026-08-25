@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 import uuid
 import json
-import fitz  
+import pymupdf
 CHUNK_LIMIT=210
 OVERLAP=0.15
 ROOT_DIR=Path(__file__).parent.parent
@@ -49,7 +49,7 @@ def add_vector_db() -> None:
         file_name = file_path.name
 
         if file_path.suffix.lower() == ".pdf":
-            doc = fitz.open(str(file_path))
+            doc = pymupdf.open(str(file_path))
             text = ""
             for page in doc:
                 text += page.get_text()
