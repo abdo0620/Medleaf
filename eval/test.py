@@ -1,82 +1,42 @@
-"""
-📊 Benchmark DeepEval pour Medleaf (Chroma + Google Gemini)
-
-Adapté du script original -- remplace Ollama par Gemini (deepeval.models.GeminiModel),
-en gardant la même structure : Golden_dataset.json (queries / corpus / ground_truth),
-génération via ta pipeline RAG existante, puis évaluation avec 4 métriques DeepEval.
-
-Place ce fichier dans: Evaluation/RAG/ (à côté de Golden_dataset.json)
-"""
+"""Evaluate retrieval-grounded answer quality with DeepEval metrics."""
 
 import json
 import os
+import dotenv
 import sys
+import time
 from pathlib import Path
 
 import pandas as pd
-from deepeval import evaluate
-from deepeval.evaluate import AsyncConfig
 from deepeval.metrics import (
     AnswerRelevancyMetric,
     ContextualPrecisionMetric,
     ContextualRecallMetric,
     FaithfulnessMetric,
 )
-from deepeval.models import GeminiModel
+from deepeval.models import OpenAIModel
 from deepeval.test_case import LLMTestCase
-from dotenv import load_dotenv
 
-
+os.environ["DEEPEVAL_PER_ATTEMPT_TIMEOUT_SECONDS_OVERRIDE"] = "120"
+dotenv.load_dotenv()
+# Paste your regenerated Groq key here (get one at console.groq.com/keys)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # -------------------------------------------------
-# Racine du projet -- adapte le nombre de parents
-# si tu places ce fichier ailleurs que Evaluation/RAG/
+# Racine du projet
 # -------------------------------------------------
-ROOT_DIR = Path(__file__).resolve().parents[1]
-sys.path.append(str(ROOT_DIR / "Rag"))
+ROOT_DIR = Path(__file__).parent.parent
+sys.path.append(str(ROOT_DIR / "Rag" / "retreival"))
+sys.path.append(str(ROOT_DIR / "Rag" / "agent"))
 
 from retreival import retreive_chunks
 from agent import ask_mia
-# -------------------------------------------------
-# Ta fonction de retrieval réelle (Chroma).
-# ⚠️ Adapte "retrieval" si ton fichier a un autre nom
-# dans le dossier Rag/ (ex: Rag.retriever, Rag.query, etc.)
-# -------------------------------------------------
-
-# Génération de la réponse finale avec Gemini, à partir
-# des chunks récupérés. Utilise google-genai comme le
-# reste du projet (déjà dans requirements.txt).
-from google import genai
-
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GEMINI_GEN_MODEL = os.getenv("GEMINI_GEN_MODEL", "gemini-2.5-flash-lite")
-gen_client = genai.Client(api_key=GEMINI_API_KEY)
-
-
-# def generate_with_gemini(question, chunks):
-#     context_text = "\n\n".join(chunks)
-#     prompt = f"""
-#     Tu es un assistant factuel. Réponds à la question UNIQUEMENT à partir
-#     des extraits fournis. N'invente rien. Si l'information n'apparaît pas
-#     dans les extraits, réponds exactement :
-#     "L'information demandée n'apparaît pas dans les extraits fournis."
-
-#     Question : {question}
-
-#     Extraits :
-#     {context_text}
-#     """
-#     response = gen_client.models.generate_content(
-#         model=GEMINI_GEN_MODEL,
-#         contents=prompt,
-#     )
-#     return response.text.strip()
-
 
 # -------------------------------------------------
 # CHARGEMENT DES DONNÉES
 # -------------------------------------------------
 def load_json(path):
+    """Load and return JSON data from ``path``."""
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -87,52 +47,55 @@ queries = dataset["queries"]
 corpus = dataset["corpus"]
 ground_truth = dataset["ground_truth"]
 
-corpus_ids = [d["id"] for d in corpus]
-corpus_texts = [d["text"] for d in corpus]
 
-
-# -------------------------------------------------
-# GÉNÉRATION DE LA RÉPONSE (ta pipeline Chroma + Gemini)
-# -------------------------------------------------
 def generate_answer(question):
-    """
-    1. Récupère les chunks pertinents depuis Chroma via retreive_chunks().
-    2. Génère la réponse finale avec Gemini à partir de ces chunks.
-
-    Retourne (reponse_finale: str, chunks_recuperes: list[str]).
-    """
-    return      ask_mia(question)
+    """Generate one answer through the application's retrieval pipeline."""
+    return ask_mia(question)
 
 
-
-# -------------------------------------------------
-# ÉVALUATION GÉNÉRATION (DeepEval + Gemini comme juge)
-# -------------------------------------------------
-load_dotenv(ROOT_DIR / "Rag" / ".env")  # même .env que ton app (GEMINI_API_KEY)
-
-GEMINI_EVAL_MODEL_NAME = os.getenv("GEMINI_API_KEY", "gemini-2.5-flash-lite")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
-eval_llm = GeminiModel(
-    api_key=GEMINI_API_KEY
+eval_llm = OpenAIModel(
+    model="openai/gpt-oss-20b",
+    api_key=GROQ_API_KEY,
+    base_url="https://api.groq.com/openai/v1",
 )
 
 
-def evaluate_generation(queries, ground_truth):
-    print("\n🔹 Évaluation avec DeepEval (juge: Gemini)...")
-    print(f"📌 Total de questions : {len(queries)}\n")
+def evaluate_generation(queries, ground_truth, n_questions=20, sleep_between_calls=65):
+    """Evaluate selected queries and persist aggregate and per-question scores."""
+    # Evaluate retrieval-grounded answers with separate faithfulness,
+    # relevance, precision, and recall signals instead of a single composite
+    # score; this makes regressions easier to diagnose.
+    print("\n🔹 Évaluation avec DeepEval (juge: Groq gpt-oss-20b)...")
+    print(f"📌 Total de questions disponibles : {len(queries)}")
+    print(f"📌 Questions évaluées cette run : {n_questions}\n")
 
-    test_cases = []
+    results_dict = {
+        "total_questions": 0,
+        "timestamp": pd.Timestamp.now().isoformat(),
+        "metrics": {
+            "Faithfulness": {"scores": [], "passed": 0, "failed": 0},
+            "AnswerRelevancy": {"scores": [], "passed": 0, "failed": 0},
+            "ContextualPrecision": {"scores": [], "passed": 0, "failed": 0},
+            "ContextualRecall": {"scores": [], "passed": 0, "failed": 0},
+        },
+        "per_question": [],
+    }
 
-    for idx, q in enumerate(queries[:1]):
-        print(f"⏳ Traitement question {idx + 1}/{len(queries)}: {q['text'][:150]}...")
+    start_time = time.time()
+
+    for idx, q in enumerate(queries[:n_questions]):
+        print(f"\n⏳ Question {idx + 1}/{n_questions}: {q['text'][:150]}...")
 
         qid = q["id"]
         relevant_docs = [c for c in corpus if c["id"] in ground_truth.get(qid, [])]
 
-        response, chunks_list = generate_answer(q["text"])
+        try:
+            response, chunks_list = generate_answer(q["text"])
+        except Exception as e:
+            print(f"⚠️ Échec génération pour {qid}: {e}")
+            continue
+
         expected_answer = "\n".join([d["text"] for d in relevant_docs])
-        time.sleep(0)
 
         test_case = LLMTestCase(
             input=q["text"],
@@ -140,72 +103,68 @@ def evaluate_generation(queries, ground_truth):
             expected_output=expected_answer,
             retrieval_context=chunks_list,
         )
-        test_cases.append(test_case)
 
-    metrics = [
-        FaithfulnessMetric(model=eval_llm),
-        ContextualPrecisionMetric(model=eval_llm),
-        ContextualRecallMetric(model=eval_llm),
-        AnswerRelevancyMetric(model=eval_llm),
-    ]
-
-    _ = evaluate(test_cases, metrics=metrics, async_config=AsyncConfig(run_async=False))
-
-    deepeval_file = ROOT_DIR / ".deepeval" / ".latest_test_run.json"
-
-    if deepeval_file.exists():
-        with open(deepeval_file, "r", encoding="utf-8") as f:
-            data = json.load(f)
-
-        metrics_summary = data["testRunData"]["metricsScores"]
-
-        results_dict = {
-            "total_questions": len(test_cases),
-            "evaluation_time_seconds": data["testRunData"]["runDuration"],
-            "timestamp": pd.Timestamp.now().isoformat(),
-            "metrics": {},
+        metrics = {
+            "Faithfulness": FaithfulnessMetric(model=eval_llm),
+            "AnswerRelevancy": AnswerRelevancyMetric(model=eval_llm),
+            "ContextualPrecision": ContextualPrecisionMetric(model=eval_llm),
+            "ContextualRecall": ContextualRecallMetric(model=eval_llm),
         }
 
-        for metric_data in metrics_summary:
-            metric_name = metric_data["metric"]
-            scores = metric_data["scores"]
-            passed = metric_data["passes"]
-            total = passed + metric_data["fails"]
-            avg_score = sum(scores) / len(scores) if scores else 0
-            pass_rate = (passed / total * 100) if total > 0 else 0
+        question_result = {"id": qid, "question": q["text"], "scores": {}}
 
-            results_dict["metrics"][metric_name] = {
-                "pass_rate_percent": round(pass_rate, 2),
-                "passed": passed,
-                "total": total,
-                "average_score": round(avg_score, 4),
-                "scores": scores,
-            }
+        for name, metric in metrics.items():
+            try:
+                metric.measure(test_case)
+                score = metric.score
+                passed = metric.is_successful()
+                print(f"  {name}: {score:.2f} {'✅' if passed else '❌'}")
 
-            print(f"{metric_name}: {pass_rate:.2f}% pass rate")
+                results_dict["metrics"][name]["scores"].append(score)
+                if passed:
+                    results_dict["metrics"][name]["passed"] += 1
+                else:
+                    results_dict["metrics"][name]["failed"] += 1
+                question_result["scores"][name] = score
 
-        all_avg = [
-            results_dict["metrics"][m]["average_score"] for m in results_dict["metrics"]
-        ]
-        global_score = sum(all_avg) / len(all_avg) if all_avg else 0
-        results_dict["global_average_score"] = round(global_score, 4)
+            except Exception as e:
+                print(f"  ⚠️ {name} a échoué: {e}")
 
-        print("\n" + "=" * 80)
-        print(f"Score Global Moyen: {global_score:.4f}")
-        print("=" * 80 + "\n")
+            # The delay avoids rate-limit failures when the external judge is
+            # backed by a provider with a free-tier token budget.
+            time.sleep(sleep_between_calls)
 
-        output_path = ROOT_DIR / "Evaluation" / "RAG" / "evaluation_results.json"
-        with open(output_path, "w", encoding="utf-8") as f:
-            json.dump(results_dict, f, indent=2, ensure_ascii=False)
+        results_dict["per_question"].append(question_result)
+        results_dict["total_questions"] += 1
 
-        print(f"✅ Résultats sauvegardés dans: {output_path}")
-        print(f"✅ Résultats DeepEval complets dans: {deepeval_file}\n")
-        return results_dict
-    else:
-        print(f"❌ ERREUR: Fichier {deepeval_file} introuvable!")
-        return None
+    results_dict["evaluation_time_seconds"] = round(time.time() - start_time, 2)
+
+    # Aggregate per-question measurements only after the run so failed calls
+    # do not silently become zero-valued scores.
+    for name, data in results_dict["metrics"].items():
+        scores = data["scores"]
+        total = data["passed"] + data["failed"]
+        data["average_score"] = round(sum(scores) / len(scores), 4) if scores else 0
+        data["pass_rate_percent"] = round((data["passed"] / total * 100), 2) if total else 0
+
+    all_avgs = [m["average_score"] for m in results_dict["metrics"].values() if m["scores"]]
+    results_dict["global_average_score"] = round(sum(all_avgs) / len(all_avgs), 4) if all_avgs else 0
+
+    print("\n" + "=" * 80)
+    for name, data in results_dict["metrics"].items():
+        print(f"{name}: avg={data['average_score']:.4f} | pass_rate={data['pass_rate_percent']:.2f}%")
+    print(f"\nScore Global Moyen: {results_dict['global_average_score']:.4f}")
+    print("=" * 80 + "\n")
+
+    output_path = ROOT_DIR / "eval" / "evaluation_results.json"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(results_dict, f, indent=2, ensure_ascii=False)
+
+    print(f"✅ Résultats sauvegardés dans: {output_path}")
+    return results_dict
 
 
 if __name__ == "__main__":
-    evaluate_generation(queries, ground_truth)
-
+    # Start small — bump n_questions once this runs clean end-to-end
+    evaluate_generation(queries, ground_truth, n_questions=20, sleep_between_calls=65)

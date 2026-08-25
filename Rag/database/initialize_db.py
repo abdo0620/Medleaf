@@ -6,7 +6,7 @@ from path import Path
 import uuid
 import json
 import fitz  
-CHUNK_LIMIT=600
+CHUNK_LIMIT=210
 OVERLAP=0.15
 ROOT_DIR=Path(__file__).parent.parent
 DIR=Path(__file__)

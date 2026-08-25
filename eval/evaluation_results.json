@@ -1,0 +1,233 @@
+{
+  "total_questions": 20,
+  "timestamp": "2026-08-25T11:14:16.271142",
+  "metrics": {
+    "Faithfulness": {
+      "scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.6666666666666666
+      ],
+      "passed": 7,
+      "failed": 0,
+      "average_score": 0.9524,
+      "pass_rate_percent": 100.0
+    },
+    "AnswerRelevancy": {
+      "scores": [
+        0.25,
+        0.3333333333333333,
+        0.5,
+        0.8333333333333334,
+        0.8,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "passed": 9,
+      "failed": 2,
+      "average_score": 0.747,
+      "pass_rate_percent": 81.82
+    },
+    "ContextualPrecision": {
+      "scores": [
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        0,
+        1.0,
+        0,
+        1.0,
+        0.5
+      ],
+      "passed": 9,
+      "failed": 2,
+      "average_score": 0.7273,
+      "pass_rate_percent": 81.82
+    },
+    "ContextualRecall": {
+      "scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "passed": 9,
+      "failed": 2,
+      "average_score": 0.8182,
+      "pass_rate_percent": 81.82
+    }
+  },
+  "per_question": [
+    {
+      "id": "q0001",
+      "question": "What is the active ingredient in SILICEA?",
+      "scores": {
+        "AnswerRelevancy": 0.25,
+        "ContextualPrecision": 1.0,
+        "ContextualRecall": 1.0
+      }
+    },
+    {
+      "id": "q0002",
+      "question": "What is SILICEA used for?",
+      "scores": {
+        "Faithfulness": 1.0,
+        "AnswerRelevancy": 0.3333333333333333,
+        "ContextualPrecision": 1.0,
+        "ContextualRecall": 1.0
+      }
+    },
+    {
+      "id": "q0003",
+      "question": "What is the recommended dosage for SILICEA?",
+      "scores": {
+        "Faithfulness": 1.0,
+        "AnswerRelevancy": 0.5,
+        "ContextualPrecision": 0.5,
+        "ContextualRecall": 1.0
+      }
+    },
+    {
+      "id": "q0004",
+      "question": "What are the warnings for SILICEA?",
+      "scores": {
+        "Faithfulness": 1.0,
+        "AnswerRelevancy": 0.8333333333333334,
+        "ContextualPrecision": 1.0,
+        "ContextualRecall": 1.0
+      }
+    },
+    {
+      "id": "q0005",
+      "question": "When should someone not use SILICEA?",
+      "scores": {
+        "Faithfulness": 1.0,
+        "AnswerRelevancy": 0.8,
+        "ContextualPrecision": 1.0,
+        "ContextualRecall": 1.0
+      }
+    },
+    {
+      "id": "q0006",
+      "question": "When should a person stop using SILICEA and ask a doctor?",
+      "scores": {
+        "Faithfulness": 1.0,
+        "AnswerRelevancy": 0.5,
+        "ContextualPrecision": 1.0,
+        "ContextualRecall": 1.0
+      }
+    },
+    {
+      "id": "q0007",
+      "question": "What are the inactive ingredients in SILICEA?",
+      "scores": {
+        "AnswerRelevancy": 1.0,
+        "ContextualPrecision": 0,
+        "ContextualRecall": 0.0
+      }
+    },
+    {
+      "id": "q0008",
+      "question": "What is the route of administration for SILICEA?",
+      "scores": {
+        "AnswerRelevancy": 1.0,
+        "ContextualPrecision": 1.0,
+        "ContextualRecall": 1.0
+      }
+    },
+    {
+      "id": "q0009",
+      "question": "Who manufactures SILICEA?",
+      "scores": {
+        "Faithfulness": 1.0,
+        "AnswerRelevancy": 1.0,
+        "ContextualPrecision": 0,
+        "ContextualRecall": 0.0
+      }
+    },
+    {
+      "id": "q0010",
+      "question": "How should SILICEA be stored?",
+      "scores": {
+        "AnswerRelevancy": 1.0,
+        "ContextualPrecision": 1.0,
+        "ContextualRecall": 1.0
+      }
+    },
+    {
+      "id": "q0011",
+      "question": "What is the active ingredient in Moisturizing Antibacterial?",
+      "scores": {}
+    },
+    {
+      "id": "q0012",
+      "question": "What is Moisturizing Antibacterial used for?",
+      "scores": {}
+    },
+    {
+      "id": "q0013",
+      "question": "What is the recommended dosage for Moisturizing Antibacterial?",
+      "scores": {}
+    },
+    {
+      "id": "q0014",
+      "question": "What are the warnings for Moisturizing Antibacterial?",
+      "scores": {}
+    },
+    {
+      "id": "q0015",
+      "question": "When should a person stop using Moisturizing Antibacterial and ask a doctor?",
+      "scores": {}
+    },
+    {
+      "id": "q0016",
+      "question": "What are the inactive ingredients in Moisturizing Antibacterial?",
+      "scores": {}
+    },
+    {
+      "id": "q0017",
+      "question": "What is the route of administration for Moisturizing Antibacterial?",
+      "scores": {}
+    },
+    {
+      "id": "q0018",
+      "question": "Who manufactures Moisturizing Antibacterial?",
+      "scores": {}
+    },
+    {
+      "id": "q0019",
+      "question": "How should Moisturizing Antibacterial be stored?",
+      "scores": {
+        "Faithfulness": 0.6666666666666666,
+        "AnswerRelevancy": 1.0,
+        "ContextualPrecision": 0.5,
+        "ContextualRecall": 1.0
+      }
+    },
+    {
+      "id": "q0020",
+      "question": "What is the active ingredient in Quick Action?",
+      "scores": {}
+    }
+  ],
+  "evaluation_time_seconds": 18053.43,
+  "global_average_score": 0.8112
+}
