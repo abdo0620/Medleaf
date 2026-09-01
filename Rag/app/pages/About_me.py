@@ -4,6 +4,8 @@ import streamlit as st
 import base64
 from pathlib import Path
 DIR=Path(__file__)
+ROOT =Path(__file__).parent.parent.parent.parent 
+
 def icon_src(path: str) -> str:
     """Turn a local PNG into a data URI so it can be used in an <img> tag
     inside st.markdown HTML (Streamlit doesn't serve arbitrary local files)."""
@@ -12,9 +14,8 @@ def icon_src(path: str) -> str:
         return ""
     data = base64.b64encode(p.read_bytes()).decode()
     return f"data:image/png;base64,{data}"
-
-st.set_page_config(page_title="About Me - MedLeaf", page_icon="app/assets/images/female-doctor-to-explain-svgrepo-com.svg", layout="centered")
-st.logo(str(DIR.parent.parent / Path("assets/images/female-doctor-to-explain-svgrepo-com.svg")),size="large")
+st.set_page_config(page_title="MedLeaf", page_icon=str(ROOT / "Rag" / Path("app/assets/images/Gemini_Generated_Image_8yo9v28yo9v28yo9.png")), layout="centered")
+st.logo(str(DIR.parent.parent / Path("assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png")),size="large")
 
 # ---------- styling ----------
 st.markdown("""
