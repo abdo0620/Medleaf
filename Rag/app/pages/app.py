@@ -1,17 +1,17 @@
 """
 MedLeaf — Conversational RAG Agent for Drug Leaflet Understanding
 Streamlit interface, wired to match your existing files:
-    agent.py        -> Gemini call + Mia persona prompt
+    agent.py        -> Ollama call + Mia persona prompt
     retreival.py     -> retreive_chunks(query)
     Chunking.py      / initialize_db.py  (already run separately to build Vectordb)
 
 HOW TO RUN:
-    pip install streamlit google-genai python-dotenv chromadb
+    pip install streamlit ollama python-dotenv chromadb
     streamlit run app/main.py
 
 REQUIREMENTS:
     - Vectordb/ must already exist (run initialize_db.py once before this)
-    - A .env file with your Gemini API key (GEMINI_API_KEY or GOOGLE_API_KEY)
+    - Ollama running locally with qwen2.5:3b-instruct model installed
 """
 import streamlit as st
 from pathlib import Path
