@@ -30,7 +30,8 @@ if uploaded_files:
     if st.button("➕ Add to Mia's Database", width="stretch"):
         with st.spinner("Processing, chunking, and embedding documents... Feel free to check out the 'About Me' section! 😊"):
                 saved_paths = []
-                tmp_dir = Path("files/documents_injected")
+                tmp_dir = ROOT / "Rag" / "database" / "files" / "documents_injected"
+                tmp_dir.mkdir(parents=True, exist_ok=True)
                 for f in uploaded_files:
                     file_path = tmp_dir / f.name
                     saved_paths.append(str(file_path))
