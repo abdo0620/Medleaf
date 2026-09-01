@@ -13,8 +13,8 @@ def icon_src(path: str) -> str:
     data = base64.b64encode(p.read_bytes()).decode()
     return f"data:image/png;base64,{data}"
 
-st.set_page_config(page_title="About Me — MedLeaf", page_icon="app/assets/images/Gemini_Generated_Image_8yo9v28yo9v28yo9.png", layout="centered")
-st.logo(str(DIR.parent.parent / Path("assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png")),size="large")
+st.set_page_config(page_title="About Me - MedLeaf", page_icon="app/assets/images/female-doctor-to-explain-svgrepo-com.svg", layout="centered")
+st.logo(str(DIR.parent.parent / Path("assets/images/female-doctor-to-explain-svgrepo-com.svg")),size="large")
 
 # ---------- styling ----------
 st.markdown("""
@@ -91,7 +91,7 @@ st.markdown("""
 <div class="card">
 <p>I'm <b>Abdel Moujib Begdouri Terraf</b>, originally from <b>Tangier, Morocco</b>,
 currently studying data engineering and AI at <b>IMT Atlantique</b> in Brest, France.
-I spend most of my time convincing messy data to behave — with mixed but improving results.</p>
+I spend most of my time convincing messy data to behave - with mixed but improving results.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -100,10 +100,11 @@ st.markdown("""
 <div class="card">
 <h3>🌿 Why I built MedLeaf</h3>
 <p>Medication leaflets are dense, inconsistent, and written like nobody expects
-you to actually read them. <b>MedLeaf</b> is a retrieval-augmented generation (RAG)
-system that indexes drug leaflets and answers questions in plain language,
-grounded in the real source text — no guessing, no vibes-based dosage advice.</p>
-<p class="quip">Basically: the leaflet does the reading, so you don't have to
+you to actually read them. <b>MedLeaf</b> is a local retrieval-augmented generation (RAG)
+system built with <b>Ollama</b> and <b>ChromaDB</b> that indexes drug leaflets and answers 
+questions in plain language, grounded in the real source text - no API calls, no external dependencies, 
+completely open-source and running on your machine.</p>
+<p class="quip">Basically: the leaflet does the reading through Mia, so you don't have to
 unfold a piece of paper the size of a bedsheet.</p>
 </div>
 """, unsafe_allow_html=True)
@@ -112,11 +113,11 @@ unfold a piece of paper the size of a bedsheet.</p>
 st.markdown("""
 <div class="card">
 <h3>🧠 Background</h3>
-<p>My work centers on turning messy, real-world data into reliable systems —
-ETL pipelines, clustering models, retrieval architectures that let a model
-reason over documents instead of confidently making things up. MedLeaf applies
-that same instinct to a domain where being wrong is a bit more consequential
-than a mislabeled cluster.</p>
+<p>My work centers on building reliable, open-source AI systems that you can run locally -
+vector database design, retrieval pipelines, semantic search, and integrating LLMs 
+(Ollama, transformers) without relying on external APIs. MedLeaf applies that philosophy 
+to a domain where accuracy and transparency matter: grounding medical information in 
+actual source documents instead of letting models confidently hallucinate.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -125,16 +126,17 @@ st.markdown("""
 <div class="card">
 <h3>⚙️ Skills</h3>
 <p><b>Data engineering:</b> Python (Pandas, NumPy), ETL pipelines, API integration</p>
-<p><b>ML / AI:</b> unsupervised learning (K-Means, DBSCAN), RAG pipelines,
-vector databases, conversational agents</p>
-<p><b>Foundations:</b> algorithms, statistics, applied ML, big data architecture (Spark)</p>
+<p><b>ML / AI:</b> RAG systems, vector databases, local LLM deployment (Ollama), 
+semantic search, conversational agents</p>
+<p><b>Foundations:</b> algorithms, statistics, applied ML, information retrieval</p>
 <div>
 <span class="pill">Python</span>
 <span class="pill">RAG</span>
-<span class="pill">ETL</span>
-<span class="pill">Clustering</span>
+<span class="pill">Ollama</span>
+<span class="pill">ChromaDB</span>
 <span class="pill">Vector DBs</span>
-<span class="pill">Spark</span>
+<span class="pill">Streamlit</span>
+<span class="pill">LLMs</span>
 </div>
 </div>
 """, unsafe_allow_html=True)
