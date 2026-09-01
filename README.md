@@ -1,124 +1,204 @@
-# MedLeaf
+# **MedLeaf - Assistant Conversationnel IA pour la Compréhension des Notices Médicales**
 
-MedLeaf is a Streamlit application for exploring medication leaflets with a retrieval-augmented generation (RAG) assistant. Users can ask Mia questions about indexed drug information, inspect the retrieved text chunks, and upload PDF or TXT leaflets to add to the local knowledge base.
+**MedLeaf** est une application Streamlit pour explorer les notices de médicaments avec un assistant basé sur la Retrieval-Augmented Generation (RAG). Les utilisateurs peuvent poser des questions à **Mia** sur les informations de médicaments indexées, inspecter les fragments de texte récupérés, et télécharger des fichiers PDF ou TXT pour enrichir la base de connaissances locale.
 
-The assistant runs locally with Ollama and the `qwen2.5:3b-instruct` model. Answers are generated from text retrieved from a persistent Chroma database rather than from a hosted Gemini API.
+L'assistant fonctionne entièrement en local avec **Ollama** et le modèle `qwen2.5:3b-instruct`. Les réponses sont générées à partir du texte récupéré dans une base de données vectorielle **ChromaDB** persistante, sans dépendre d'API externes.
 
 ![MedLeaf interface](Rag/app/assets/images/Gemini_Generated_Image_pjw0i6pjw0i6pjw0.png)
 
-> MedLeaf is an educational document-search tool, not a substitute for a doctor, pharmacist, or official medication leaflet. Always verify medical decisions with a qualified professional.
+> **Avertissement important** : MedLeaf est un outil éducatif de recherche documentaire, non un substitut à un médecin, pharmacien ou notice officielle de médicament. Vérifiez toujours les décisions médicales avec un professionnel qualifié.
 
-## App showcase
-The application has three Streamlit pages:
+---
 
-- **Talk To Mia** — ask questions about the indexed medication documents.
-- **Upload Your Documents** — add PDF or TXT files to the ingestion queue and index them.
-- **About me** — project and author information.
+## **I. Architecture générale**
 
-### Main interface
-![Main app interface](screenshots/Screenshot%202026-07-22%20121857.png)
+Le projet repose sur une architecture modulaire conçue pour le traitement, l'indexation et l'interrogation de documents via un pipeline RAG. Il est structuré autour de trois composants fonctionnels distincts :
 
+- **Chunking** : module chargé de la préparation des documents, incluant le nettoyage, la normalisation et le découpage sémantique en segments exploitables par les modèles de langage. Utilise `tiktoken` pour un comptage précis des tokens.
 
+- **Embedding & Retrieval** : composant responsable de la vectorisation des segments et de leur indexation dans la base vectorielle **ChromaDB**, ainsi que de la recherche sémantique pour récupérer les trois fragments les plus pertinents par rapport à la requête utilisateur.
 
-### Document upload flow
-![Upload documents](screenshots/Screenshot%202026-07-22%20122503.png)
+- **Application (App)** : interface utilisateur développée avec **Streamlit**, permettant l'interaction en chat avec Mia, le téléchargement de documents (PDF/TXT), l'inspection des chunks récupérés, et la consultation de l'historique des échanges.
 
+L'ensemble de l'infrastructure est entièrement conteneurisé via **Docker Compose**, garantissant la reproductibilité des environnements, l'isolation des services et la facilité de déploiement.
 
-## How it works
-1. FDA label data is downloaded into `Rag/database/files/` by `Rag/database/files/add.py`.
-2. `Rag/database/inject_fda_db.py` chunks the FDA text and stores embeddings in Chroma.
-3. A user asks Mia a question in the Streamlit chat.
-4. The retriever returns the three most relevant chunks from the `mrooc` collection.
-5. Ollama generates an answer using those chunks and the conversation history.
-6. Uploaded PDF and TXT files are chunked, embedded, and removed from the temporary ingestion queue after indexing.
+### **Technologies utilisées**
+- **Python 3.12** — langage principal
+- **Streamlit 1.58** — interface utilisateur
+- **ChromaDB 1.5.9** — stockage vectoriel persistant
+- **Ollama** — exécution locale des modèles LLM (`qwen2.5:3b-instruct`)
+- **PyMuPDF** — extraction de texte depuis PDF
+- **tiktoken** — comptage de tokens pendant le chunking
+- **Docker & Docker Compose** — conteneurisation et orchestration
 
-## Technologies
-- Python 3.12
-- Streamlit 1.58
-- ChromaDB 1.5.9 for persistent vector storage
-- Ollama with `qwen2.5:3b-instruct` for local answer generation
-- PyMuPDF for PDF text extraction
-- `tiktoken` for token counting during chunking
-- Docker and Docker Compose configuration
+---
 
-## Prerequisites
-- Docker Desktop on Windows and macOS, or Docker Engine with Compose on Linux
-- Ollama installed and running
-- The Ollama model `qwen2.5:3b-instruct`
+## **II. Lancer le projet en 1 commande**
 
-## Run with Docker
-From the project root, build and start the application:
+### **⚡ Démarrage rapide avec Docker**
+
+Ce projet est **entièrement dockerisé**. Une seule commande pour tout démarrer :
 
 ```bash
 docker compose up --build
 ```
 
-The application is then available at [http://localhost:8501](http://localhost:8501). Ollama must be running where the application can reach it, and the model must be downloaded before asking questions:
+C'est tout !
 
-```bash
-ollama serve
-ollama pull qwen2.5:3b-instruct
+#### **Prérequis minimum**
+- Docker Desktop (Windows/macOS) ou Docker Engine avec Compose (Linux)
+- Au moins 8 GB de RAM disponible
+- Connexion Internet pour le premier téléchargement des modèles
+
+#### **Durée d'exécution**
+
+| Étape | Durée |
+|-------|-------|
+| **Premier lancement** (téléchargement des modèles ~3 GB) | 10-15 minutes |
+| **Lancements suivants** (conteneurs déjà prêts) | < 1 minute |
+
+#### **Accéder à l'application**
+
+Une fois la commande terminée, ouvrez votre navigateur :
+
+```
+http://localhost:8501
 ```
 
-To stop the application, press `Ctrl+C`. To stop and remove the container, run:
+#### **Arrêter l'application**
+
+Appuyez sur `Ctrl+C` pour arrêter gracieusement tous les conteneurs.
+
+Pour nettoyer complètement (supprimer les conteneurs mais garder les données) :
 
 ```bash
 docker compose down
 ```
 
-The Compose configuration persists the Chroma database and document files through mounted volumes, so indexed data remains available after the container is restarted.
+**Important** : Les données (ChromaDB et documents) sont persistées via des volumes Docker et seront disponibles lors du prochain démarrage.
 
-## Run locally
-From the project root, create and activate a virtual environment, then install the dependencies:
+---
+
+### **Logs et diagnostic**
+
+Pour afficher les logs en temps réel :
+
+```bash
+docker compose logs -f
+```
+
+Pour afficher les logs d'un service spécifique (ex. Ollama) :
+
+```bash
+docker compose logs -f ollama-server
+```
+
+---
+
+## **Interface & Galerie**
+
+### **Chat avec Mia**
+![Main app interface](screenshots/Screenshot%202026-07-22%20121857.png)
+
+### **Téléchargement de documents**
+![Upload documents](screenshots/Screenshot%202026-07-22%20122503.png)
+
+---
+
+## **III. Fonctionnement du système**
+
+1. **Ingestion** : Les données FDA et les documents uploadés sont traités par le module **Chunking**
+2. **Indexation** : Les chunks sont vectorisés et indexés dans **ChromaDB**
+3. **Requête utilisateur** : L'utilisateur pose une question via l'interface Streamlit
+4. **Récupération** : Le système récupère les 3 chunks les plus pertinents depuis ChromaDB
+5. **Génération** : **Ollama** génère une réponse basée sur ces chunks et l'historique de conversation
+6. **Affichage** : La réponse et les sources sont affichées à l'utilisateur
+
+---
+
+## **IV. Base de données FDA**
+
+Les données FDA sont **déjà incluses** dans le conteneur Docker et sont indexées automatiquement au premier démarrage.
+
+Les données sont stockées dans :
+- **Source** : `Rag/database/files/drug_json_files/` et `drug_text_files/`
+- **Index** : `Rag/database/Vectordb/` (ChromaDB persistante)
+
+### **Réinitialiser la base de données**
+
+Si vous voulez effacer tous les documents indexés (FDA + uploads) :
+
+```bash
+docker compose exec app python Rag/database/files/reset.py
+```
+
+Puis relancez Docker Compose pour réindexer les données FDA.
+
+---
+
+## **V. Structure du projet**
+
+```
+Rag/
+├── agent/              # Mia + intégration Ollama
+├── app/                # Interface Streamlit (pages: chat, upload, about)
+├── Chunking/           # Découpage sémantique des textes
+├── database/
+│   ├── db.py           # Client ChromaDB
+│   ├── inject_fda_db.py # Indexation FDA
+│   └── files/          # Données FDA + documents uploadés
+└── retreival/          # Recherche vectorielle
+
+eval/                   # Scripts d'évaluation
+docker-compose.yml      # Configuration Docker (le cœur du projet)
+Dockerfile              # Image Docker
+requirements.txt        # Dépendances Python
+```
+
+---
+
+## **VI. Configuration rapide**
+
+- **Modèle LLM** : `qwen2.5:3b-instruct` (configurable dans `Rag/agent/agent.py`)
+- **Endpoint Ollama** : `http://ollama-server:11434` (local pour Docker)
+- **Collection ChromaDB** : `mrooc`
+- **UI** : Streamlit sur `http://localhost:8501`
+
+---
+
+## **VII. Troubleshooting**
+
+| Problème | Solution |
+|----------|----------|
+| Docker ne démarre pas | Vérifiez les logs : `docker compose logs -f` |
+| Port 8501 déjà utilisé | `docker compose down` puis relancez |
+| Ollama slow/timeout | Attendre le téléchargement du modèle (~10-15 min la première fois) |
+| Connexion ChromaDB refused | Vérifiez que tous les conteneurs tournent : `docker ps` |
+
+---
+
+## **VIII. Lancer localement (Sans Docker - Non recommandé)**
+
+Si vous insistez absolument pour ignorer Docker :
 
 ```bash
 python -m venv .env
-.env/Scripts/activate       # Windows PowerShell
+.env/Scripts/activate       # Windows
 source .env/bin/activate   # macOS/Linux
 pip install -r requirements.txt
-```
 
-Launch the application:
+# Dans un terminal séparé
+ollama serve
+ollama pull qwen2.5:3b-instruct
 
-```bash
+# Lancer l'app
 streamlit run Rag/app/main.py
 ```
 
-## Populate the FDA database
-The repository includes FDA label data under `Rag/database/files/`. To download a fresh set of human prescription labels and index it:
+**Mais sérieusement, utilisez Docker. C'est plus simple.**
 
-```bash
-python Rag/database/files/add.py
-python Rag/database/inject_fda_db.py
-```
+---
 
-The indexed data is persisted in `Rag/database/Vectordb/`. Run the injection step again only when you want to add newly downloaded data.
+## **À propos**
 
-## Upload documents
-Use the **Upload Your Documents** page to upload PDF or TXT leaflets. The page sends files to the ingestion queue, chunks and embeds them, adds them to Chroma, and removes the queued source files after successful processing.
-
-## Project structure
-```text
-Rag/
-├── agent/                  # Mia prompt and Ollama integration
-├── app/
-│   ├── main.py             # Streamlit navigation entry point
-│   ├── assets/             # Logos and assistant avatar
-│   └── pages/              # Chat, upload, and About pages
-├── Chunking/               # Recursive token-aware text chunking
-├── database/
-│   ├── db.py               # Persistent Chroma client and collection
-│   ├── initialize_db.py    # FDA and uploaded-document indexing
-│   ├── inject_fda_db.py    # FDA indexing script
-│   └── files/              # FDA data and document ingestion folders
-└── retreival/              # Similarity search over Chroma
-eval/                       # Evaluation data and test script
-requirements.txt            # Python dependencies
-```
-
-## Configuration
-No Gemini or Google API key is required. Ollama must be available at its default local endpoint, and the model name used by the application is configured directly in `Rag/agent/agent.py`:
-
-```text
-qwen2.5:3b-instruct
-```
+**MedLeaf** est un projet éducatif démontrant les systèmes RAG modernes avec LLMs open-source et stockage vectoriel local. Entièrement dockerisé pour une simplicité maximale.
