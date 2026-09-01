@@ -5,5 +5,11 @@ __pycache__
 *.pyo
 .venv
 .env/
+.streamlit/secrets.toml
+.deepeval/
+Rag/database/files/drug_text_files/
+Rag/database/files/drug_json_files/
+Rag/database/files/documents_injected/
+Rag/database/Vectordb/
 rag_eval/
 *.log
